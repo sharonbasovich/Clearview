@@ -5,14 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { BookOpen, TrendingUp, Calendar, Menu, Home } from "lucide-react";
+import { BookOpen, TrendingUp, Plus, Menu, Home } from "lucide-react";
 import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/app", icon: Home },
-  { name: "Journal", href: "/notes", icon: BookOpen },
+  { name: "Journal", href: "/app/journal", icon: BookOpen },
   { name: "Insights", href: "/app/insights", icon: TrendingUp },
-  { name: "Calendar", href: "/app/analytics", icon: Calendar },
 ];
 
 export function Navigation() {
@@ -57,6 +56,14 @@ export function Navigation() {
                 </Link>
               );
             })}
+
+            {/* New Entry Button */}
+            <Link href="/notes">
+              <Button className="bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
+                <Plus className="w-4 h-4 mr-2" />
+                New Entry
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Navigation */}
@@ -86,6 +93,14 @@ export function Navigation() {
                     </Link>
                   );
                 })}
+
+                {/* New Entry Button for Mobile */}
+                <Link href="/notes" onClick={() => setIsOpen(false)}>
+                  <Button className="w-full bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
+                    <Plus className="w-4 h-4 mr-2" />
+                    New Entry
+                  </Button>
+                </Link>
               </div>
             </SheetContent>
           </Sheet>

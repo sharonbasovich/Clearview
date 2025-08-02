@@ -75,26 +75,14 @@ export default function HomePage({ user }: DashboardProps) {
               </Card>
             </Link>
 
-            <Link href="/app/insights" className="h-full">
+            <Link href="/app/insights" className="h-full col-span-2">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-amber-200 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-2">
                     <Heart className="w-6 h-6 text-amber-600" />
                   </div>
-                  <CardTitle className="text-lg">AI Insights</CardTitle>
-                  <CardDescription>Get suggestions</CardDescription>
-                </CardHeader>
-              </Card>
-            </Link>
-
-            <Link href="/app/analytics" className="h-full">
-              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-200 h-full flex flex-col justify-center">
-                <CardHeader className="text-center">
-                  <div className="mx-auto w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
-                    <TrendingUp className="w-6 h-6 text-purple-600" />
-                  </div>
-                  <CardTitle className="text-lg">Analytics</CardTitle>
-                  <CardDescription>View your stats</CardDescription>
+                  <CardTitle className="text-lg">Insights</CardTitle>
+                  <CardDescription>Suggestions and Stats</CardDescription>
                 </CardHeader>
               </Card>
             </Link>
