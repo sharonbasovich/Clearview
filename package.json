@@ -1,31 +1,42 @@
 {
-  "name": "DreamWorks-AI-Influencer-Identity-Brand-Identity",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
-    "start": "next start"
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.4.0",
+    "@mui/icons-material": "^6.4.0",
+    "@tiptap/react": "^3.0.9",
+    "@tiptap/starter-kit": "^3.0.9",
+    "@tiptap/extension-placeholder": "^3.0.9",
+    "@tiptap/extension-character-count": "^3.0.9",
+    "@supabase/ssr": "latest",
+    "@supabase/supabase-js": "latest",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "lucide-react": "^0.454.0",
-    "next": "^14.2.30",
-    "react": "^18",
-    "react-dom": "^18",
-    "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "lucide-react": "^0.511.0",
+    "next": "latest",
+    "next-themes": "^0.4.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "^3.3.0"
   },
   "devDependencies": {
-    "@types/node": "^22",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.13",
-    "postcss": "^8.5",
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.20",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.1",
+    "postcss": "^8",
     "tailwindcss": "^3.4.1",
+    "tailwindcss-animate": "^1.0.7",
     "typescript": "^5"
   }
 }

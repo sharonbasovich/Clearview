@@ -1,116 +1,358 @@
-"use client"
+'use client'
 
-// import Image from "next/image";
-import Link from "next/link"
+import { useState } from 'react'
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  AppBar,
+  Toolbar,
+  Card,
+  CardContent,
+  Grid,
+  Stack,
+  IconButton,
+  useMediaQuery,
+  useTheme,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from '@mui/material'
+import {
+  Description,
+  Search,
+  Tag,
+  Keyboard,
+  FlashOn,
+  Security,
+  Menu as MenuIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material'
 
-export default function Home(): JSX.Element {
+export default function HomePage() {
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
+  }
+
+  const navItems = ['Features', 'Pricing', 'About', 'Contact']
+
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        NoteCraft
+      </Typography>
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }}>
+              <ListItemText primary={item} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }}>
+            <Button variant="outlined" fullWidth>
+              Sign In
+            </Button>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }}>
+            <Button variant="contained" fullWidth href="/auth">
+              Get Started
+            </Button>
+          </ListItemButton>
+        </ListItem>
+      </List>
+    </Box>
+  )
+
   return (
-    <div className="flex flex-col items-center">
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="flex flex-col items-center space-y-4 text-center">
-            <div className="space-y-2">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-800">
-                Welcome to VibeScope
-              </h1>
-              <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl">
-                The ultimate influencer aura management platform. Track vibes, analyze brand resonance, and discover the
-                perfect energy for your marketing campaigns.
-              </p>
-            </div>
-            <div className="space-x-4">
-              <Link
-                href="/philosophy"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-purple-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-700"
-              >
-                Discover Our Philosophy
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-700">
-        <div className="container px-4 md:px-6">
-          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
-            <div className="space-y-4">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">The Essence of Connection</h2>
-              <p className="text-gray-300 md:text-lg">
-                At AuraFlow, we believe that the essence of connection lies in synergy—where the vibrant energy of an
-                influencer&#39;s unique &quot;vibe&quot; meets the grounded strength of a brand&#39;s
-                &quot;identity.&quot;
-              </p>
-              <Link
-                href="/synergy"
-                className="inline-flex h-10 items-center justify-center rounded-md bg-indigo-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-700"
-              >
-                Learn More
-              </Link>
-            </div>
-            <div className="flex justify-center">
-              <div className="relative h-[300px] w-[300px] md:h-[400px] md:w-[400px] overflow-hidden rounded-lg shadow-xl">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-600 opacity-80"></div>
-                <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">
-                  Synergy
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container px-4 md:px-6">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Find Your Perfect Match</h2>
-            <p className="mx-auto max-w-[700px] text-gray-300 md:text-lg mt-4">
-              Our platform helps brands and influencers create meaningful partnerships based on shared values and
-              authentic connections.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <span className="text-purple-600 text-xl">1</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Define Your Identity</h3>
-              <p className="text-gray-300">
-                Share your brand&#39;s story, values, and mission to help us understand your unique identity.
-              </p>
-            </div>
-
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
-              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
-                <span className="text-indigo-600 text-xl">2</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Discover Aligned Vibes</h3>
-              <p className="text-gray-300">
-                Our algorithm matches you with influencers whose personal ethos resonates with your brand.
-              </p>
-            </div>
-
-            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-                <span className="text-purple-600 text-xl">3</span>
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Create Authentic Partnerships</h3>
-              <p className="text-gray-300">
-                Build meaningful relationships that amplify both your brand and the influencer&apos;s unique voice.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center mt-10">
-            <Link
-              href="/match"
-              className="inline-flex h-12 items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 px-10 text-sm font-medium text-white shadow transition-colors hover:from-purple-700 hover:to-indigo-700"
+    <Box>
+      {/* Navigation */}
+      <AppBar 
+        position="fixed" 
+        elevation={0}
+        sx={{ 
+          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backdropFilter: 'blur(10px)',
+          borderBottom: '1px solid rgba(0, 0, 0, 0.08)',
+        }}
+      >
+        <Toolbar>
+          <Typography 
+            variant="h6" 
+            component="div" 
+            sx={{ 
+              flexGrow: 1,
+              color: 'primary.main',
+              fontWeight: 700,
+            }}
+          >
+            NoteCraft
+          </Typography>
+          
+          {!isMobile && (
+            <Stack direction="row" spacing={4} alignItems="center">
+              {navItems.map((item) => (
+                <Button key={item} color="inherit" sx={{ color: 'text.primary' }}>
+                  {item}
+                </Button>
+              ))}
+              <Button variant="outlined" sx={{ ml: 2 }}>
+                Sign In
+              </Button>
+              <Button variant="contained" href="/auth">
+                Get Started
+              </Button>
+            </Stack>
+          )}
+          
+          {isMobile && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ color: 'text.primary' }}
             >
-              Start Matching Now
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
+              <MenuIcon />
+            </IconButton>
+          )}
+        </Toolbar>
+      </AppBar>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        variant="temporary"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        ModalProps={{ keepMounted: true }}
+        sx={{
+          display: { xs: 'block', md: 'none' },
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
+        }}
+      >
+        {drawer}
+      </Drawer>
+
+      {/* Hero Section */}
+      <Box
+        sx={{
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          color: 'white',
+          pt: { xs: 12, md: 16 },
+          pb: { xs: 8, md: 12 },
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box textAlign="center">
+            <Typography 
+              variant="h1" 
+              component="h1" 
+              gutterBottom
+              sx={{
+                fontSize: { xs: '2.5rem', md: '4rem' },
+                fontWeight: 700,
+                mb: 3,
+              }}
+            >
+              Your thoughts, beautifully organized
+            </Typography>
+            <Typography 
+              variant="h5" 
+              component="p" 
+              sx={{ 
+                mb: 4,
+                opacity: 0.9,
+                maxWidth: '800px',
+                mx: 'auto',
+                lineHeight: 1.6,
+              }}
+            >
+              NoteCraft is a powerful, Notion-like note-taking app that helps you capture ideas, 
+              organize thoughts, and boost productivity with rich text editing and smart organization.
+            </Typography>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              spacing={2} 
+              justifyContent="center"
+              sx={{ mt: 4 }}
+            >
+              <Button 
+                variant="contained" 
+                size="large"
+                href="/auth"
+                sx={{ 
+                  backgroundColor: 'white',
+                  color: 'primary.main',
+                  px: 4,
+                  py: 1.5,
+                  '&:hover': {
+                    backgroundColor: 'grey.100',
+                  },
+                }}
+              >
+                Get Started Free
+              </Button>
+              <Button 
+                variant="outlined" 
+                size="large"
+                sx={{ 
+                  borderColor: 'white',
+                  color: 'white',
+                  px: 4,
+                  py: 1.5,
+                  '&:hover': {
+                    borderColor: 'white',
+                    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  },
+                }}
+              >
+                Watch Demo
+              </Button>
+            </Stack>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Features Section */}
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+        <Box textAlign="center" mb={8}>
+          <Typography variant="h2" component="h2" gutterBottom>
+            Everything you need to stay organized
+          </Typography>
+          <Typography variant="h6" color="text.secondary" sx={{ maxWidth: '600px', mx: 'auto' }}>
+            Powerful features designed to help you capture, organize, and share your ideas effortlessly.
+          </Typography>
+        </Box>
+
+        <Grid container spacing={4}>
+          {[
+            {
+              icon: <Description sx={{ fontSize: 48 }} />,
+              title: 'Rich Text Editing',
+              description: 'Powerful TipTap editor with full formatting support, headings, lists, and more.',
+              color: 'primary.main',
+            },
+            {
+              icon: <Search sx={{ fontSize: 48 }} />,
+              title: 'Smart Search',
+              description: 'Find any note instantly with our powerful search that looks through titles, content, and tags.',
+              color: 'secondary.main',
+            },
+            {
+              icon: <Tag sx={{ fontSize: 48 }} />,
+              title: 'Tag System',
+              description: 'Organize notes with custom tags and create your own organizational system.',
+              color: 'success.main',
+            },
+            {
+              icon: <Keyboard sx={{ fontSize: 48 }} />,
+              title: 'Keyboard Shortcuts',
+              description: 'Boost productivity with extensive keyboard shortcuts for formatting and navigation.',
+              color: 'warning.main',
+            },
+            {
+              icon: <FlashOn sx={{ fontSize: 48 }} />,
+              title: 'Auto-save',
+              description: 'Never lose your work. Notes are automatically saved as you type.',
+              color: 'info.main',
+            },
+            {
+              icon: <Security sx={{ fontSize: 48 }} />,
+              title: 'Secure & Private',
+              description: 'Your notes are stored securely with privacy as our top priority.',
+              color: 'error.main',
+            },
+          ].map((feature, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index}>
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                <CardContent sx={{ p: 4, textAlign: 'center' }}>
+                  <Box sx={{ color: feature.color, mb: 2 }}>
+                    {feature.icon}
+                  </Box>
+                  <Typography variant="h5" component="h3" gutterBottom fontWeight={600}>
+                    {feature.title}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {feature.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      {/* CTA Section */}
+      <Box 
+        sx={{ 
+          backgroundColor: 'grey.900',
+          color: 'white',
+          py: { xs: 8, md: 12 },
+        }}
+      >
+        <Container maxWidth="md">
+          <Box textAlign="center">
+            <Typography variant="h2" component="h2" gutterBottom>
+              Ready to transform your note-taking?
+            </Typography>
+            <Typography variant="h6" sx={{ mb: 4, opacity: 0.8 }}>
+              Join thousands of users who have already made the switch to smarter note-taking.
+            </Typography>
+            <Button 
+              variant="contained" 
+              size="large"
+              href="/auth"
+              sx={{ 
+                px: 4,
+                py: 1.5,
+                backgroundColor: 'primary.main',
+                '&:hover': {
+                  backgroundColor: 'primary.dark',
+                },
+              }}
+            >
+              Start Taking Notes
+            </Button>
+          </Box>
+        </Container>
+      </Box>
+
+      {/* Footer */}
+            {/* Footer */}
+      <Box 
+        sx={{ 
+          backgroundColor: 'grey.100',
+          py: 4,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography variant="body2" color="text.secondary" textAlign="center">
+            © 2025 NoteCraft. Built with Next.js and Material UI.
+          </Typography>
+        </Container>
+      </Box>
+    </Box>
   )
 }
+
