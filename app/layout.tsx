@@ -8,10 +8,15 @@ export const metadata = {
   title: "Clearview",
   description:
     "A journal app to encourage reflection and mindfulness while providing insights",
+  icons: {
+    icon: '/icon.png',
+    shortcut: '/icon.png',
+    apple: '/icon.png',
+  },
 };
 
 export default function RootLayout({
-  children,
+  children, 
 }: {
   children: React.ReactNode;
 }) {
