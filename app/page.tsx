@@ -43,8 +43,11 @@ export default function HomePage() {
   useEffect(() => {
     const style = document.createElement("style");
     style.textContent = `
-      .split-text-orange .split-parent {
+      .split-text-orange.split-parent {
         color: #FFB33B !important;
+      }
+      .split-text-blue.split-parent {
+        color: #3BA4FF !important;
       }
     `;
     document.head.appendChild(style);
@@ -59,14 +62,14 @@ export default function HomePage() {
     setMobileOpen(!mobileOpen);
   };
 
-  const navItems = ["Features", "Pricing", "About", "Contact"];
+  const navItems: string[] = [];
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Box sx={{ my: 2 }}>
         <SplitText
           text="Clearview"
-          className="text-xl font-bold split-text-orange"
+          className="text-xl font-bold split-text-blue"
           delay={50}
           duration={0.8}
           from={{ opacity: 0, y: -20 }}
@@ -77,49 +80,51 @@ export default function HomePage() {
         />
       </Box>
       <List>
-        {navItems.map((item, index) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: "center" }}>
-              <ListItemText
-                primary={
-                  <SplitText
-                    text={item}
-                    delay={150 + index * 100}
-                    duration={0.6}
-                    from={{ opacity: 0, x: -20 }}
-                    to={{ opacity: 1, x: 0 }}
-                    threshold={0.1}
-                    rootMargin="-30px"
-                    textAlign="center"
-                    className="split-text-orange"
-                  />
-                }
-              />
-            </ListItemButton>
-          </ListItem>
-        ))}
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
-            <Button variant="outlined" fullWidth href="/auth">
+            <Button
+              variant="outlined"
+              fullWidth
+              href="/auth"
+              sx={{
+                borderColor: "#FFB33B",
+                color: "#FFB33B",
+                "&:hover": {
+                  borderColor: "#FFB33B",
+                  backgroundColor: "rgba(255, 179, 59, 0.1)",
+                },
+              }}
+            >
               <SplitText
                 text="Sign In"
-                delay={550}
+                delay={100}
                 duration={0.6}
                 from={{ opacity: 0, scale: 0.8 }}
                 to={{ opacity: 1, scale: 1 }}
                 threshold={0.1}
                 rootMargin="-30px"
                 textAlign="center"
+                className="split-text-orange"
               />
             </Button>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: "center" }}>
-            <Button variant="contained" fullWidth href="/auth">
+            <Button
+              variant="contained"
+              fullWidth
+              href="/auth"
+              sx={{
+                backgroundColor: "#FFB33B",
+                "&:hover": {
+                  backgroundColor: "#E6A32E",
+                },
+              }}
+            >
               <SplitText
                 text="Get Started"
-                delay={600}
+                delay={150}
                 duration={0.6}
                 from={{ opacity: 0, scale: 0.8 }}
                 to={{ opacity: 1, scale: 1 }}
@@ -174,7 +179,7 @@ export default function HomePage() {
           <Box sx={{ flexGrow: 1 }}>
             <SplitText
               text="Clearview"
-              className="text-2xl font-bold split-text-orange"
+              className="text-2xl font-bold split-text-blue"
               delay={50}
               duration={0.8}
               from={{ opacity: 0, y: -20 }}
@@ -186,36 +191,43 @@ export default function HomePage() {
           </Box>
 
           {!isMobile && (
-            <Stack direction="row" spacing={4} alignItems="center">
-              {navItems.map((item, index) => (
-                <Button key={item} color="inherit" sx={{ color: "#FFB33B" }}>
-                  <SplitText
-                    text={item}
-                    delay={100 + index * 50}
-                    duration={0.6}
-                    from={{ opacity: 0, y: -10 }}
-                    to={{ opacity: 1, y: 0 }}
-                    threshold={0.1}
-                    rootMargin="-30px"
-                    className="split-text-orange"
-                  />
-                </Button>
-              ))}
-              <Button variant="outlined" sx={{ ml: 2 }} href="/auth">
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Button
+                variant="outlined"
+                sx={{
+                  borderColor: "#FFB33B",
+                  color: "#FFB33B",
+                  "&:hover": {
+                    borderColor: "#FFB33B",
+                    backgroundColor: "rgba(255, 179, 59, 0.1)",
+                  },
+                }}
+                href="/auth"
+              >
                 <SplitText
                   text="Sign In"
-                  delay={300}
+                  delay={100}
                   duration={0.6}
                   from={{ opacity: 0, scale: 0.8 }}
                   to={{ opacity: 1, scale: 1 }}
                   threshold={0.1}
                   rootMargin="-30px"
+                  className="split-text-orange"
                 />
               </Button>
-              <Button variant="contained" href="/auth">
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "#FFB33B",
+                  "&:hover": {
+                    backgroundColor: "#E6A32E",
+                  },
+                }}
+                href="/auth"
+              >
                 <SplitText
                   text="Get Started"
-                  delay={350}
+                  delay={150}
                   duration={0.6}
                   from={{ opacity: 0, scale: 0.8 }}
                   to={{ opacity: 1, scale: 1 }}
@@ -429,41 +441,6 @@ export default function HomePage() {
           ))}
         </Grid>
       </Container>
-      {/* CTA Section */}
-      <Box
-        sx={{
-          backgroundColor: "grey.900",
-          color: "white",
-          py: { xs: 8, md: 12 },
-        }}
-      >
-        <Container maxWidth="md">
-          <Box textAlign="center">
-            <Typography variant="h2" component="h2" gutterBottom>
-              Ready to transform your note-taking?
-            </Typography>
-            <Typography variant="h6" sx={{ mb: 4, opacity: 0.8 }}>
-              Join thousands of users who have already made the switch to
-              smarter note-taking.
-            </Typography>
-            <Button
-              variant="contained"
-              size="large"
-              href="/auth"
-              sx={{
-                px: 4,
-                py: 1.5,
-                backgroundColor: "primary.main",
-                "&:hover": {
-                  backgroundColor: "primary.dark",
-                },
-              }}
-            >
-              Start Taking Notes
-            </Button>
-          </Box>
-        </Container>
-      </Box>
       {/* Footer */}
       {/* Footer */}
       <Box
