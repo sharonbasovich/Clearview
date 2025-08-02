@@ -5,10 +5,9 @@ import { MUIThemeProvider } from "@/components/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "NoteCraft - Notion-like Notes",
+  title: "Clearview",
   description:
-    "A powerful note-taking app with rich text editing and hierarchical organization",
-  generator: "v0.dev",
+    "A journal app to encourage reflection and mindfulness while providing insights",
 };
 
 export default function RootLayout({

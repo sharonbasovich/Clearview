@@ -177,11 +177,11 @@ export default function HomePage() {
           zIndex: 1000,
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ py: 2 }}>
           <Box sx={{ flexGrow: 1 }}>
             <SplitText
               text="Clearview"
-              className="text-2xl font-bold split-text-blue"
+              className="text-3xl font-bold split-text-blue"
               delay={50}
               duration={0.8}
               from={{ opacity: 0, y: -20 }}
@@ -196,9 +196,13 @@ export default function HomePage() {
             <Stack direction="row" spacing={2} alignItems="center">
               <Button
                 variant="outlined"
+                size="large"
                 sx={{
                   borderColor: "#FFB33B",
                   color: "#FFB33B",
+                  fontSize: "1.1rem",
+                  px: 3,
+                  py: 1.5,
                   "&:hover": {
                     borderColor: "#FFB33B",
                     backgroundColor: "rgba(255, 179, 59, 0.1)",
@@ -219,8 +223,12 @@ export default function HomePage() {
               </Button>
               <Button
                 variant="contained"
+                size="large"
                 sx={{
                   backgroundColor: "#FFB33B",
+                  fontSize: "1.1rem",
+                  px: 3,
+                  py: 1.5,
                   "&:hover": {
                     backgroundColor: "#E6A32E",
                   },
