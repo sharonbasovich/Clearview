@@ -271,206 +271,116 @@ export default function HomePage() {
 
       <Box
         sx={{
-          background:
-            "linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%)",
-          color: "white",
-          pt: { xs: 12, md: 16 },
-          pb: { xs: 8, md: 12 },
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           position: "relative",
           overflow: "hidden",
-          backdropFilter: "blur(5px)",
         }}
       >
-        <Container maxWidth="lg">
-          <Box textAlign="center">
-            <Box
-              sx={{
-                fontSize: { xs: "2.5rem", md: "4rem" },
-                fontWeight: 700,
-                mb: 3,
-                color: "white",
-                textAlign: "center",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                gap: 2,
+        <Box
+          sx={{
+            background:
+              "linear-gradient(135deg, rgba(250,119,66, 0.8) 0%, rgba(254,203,43, 0.8) 100%)",
+            color: "white",
+            px: { xs: 4, md: 8 },
+            py: { xs: 6, md: 8 },
+            borderRadius: 4,
+            backdropFilter: "blur(5px)",
+            textAlign: "center",
+            maxWidth: "800px",
+            mx: 2,
+          }}
+        >
+          <Box
+            sx={{
+              fontSize: { xs: "2.5rem", md: "4rem" },
+              fontWeight: 700,
+              mb: 3,
+              color: "white",
+              textAlign: "center",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexWrap: "nowrap",
+              gap: 2,
+              minHeight: { xs: "5rem", md: "8rem" },
+              overflow: "visible",
+            }}
+          >
+            <span style={{ whiteSpace: "nowrap" }}>Journal your</span>
+            <motion.div
+              layout
+              transition={{
+                layout: { type: "spring", stiffness: 400, damping: 40 },
+              }}
+              style={{
+                display: "inline-block",
+                minWidth: "200px",
+                flexShrink: 0,
               }}
             >
-              <span>Journal your</span>
-              <motion.div
-                layout
-                transition={{
-                  layout: { type: "spring", stiffness: 400, damping: 40 },
-                }}
-                style={{ display: "inline-block" }}
-              >
-                <RotatingText
-                  texts={["life", "feelings", "day", "thoughts", "ideas"]}
-                  mainClassName="px-3 sm:px-4 md:px-6 bg-white rounded-lg font-bold flex items-center justify-center overflow-hidden"
-                  staggerFrom="last"
-                  initial={{ y: "100%" }}
-                  animate={{ y: 0 }}
-                  exit={{ y: "-120%" }}
-                  staggerDuration={0.025}
-                  splitLevelClassName="flex items-center"
-                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
-                  rotationInterval={2000}
-                  auto={true}
-                  loop={true}
-                  splitBy="characters"
-                  elementLevelClassName="font-bold"
-                  style={{ color: "#8e59ff" }}
-                />
-              </motion.div>
-            </Box>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={2}
-              justifyContent="center"
-              sx={{ mt: 4 }}
-            >
-              <Button
-                variant="contained"
-                size="large"
-                href="/auth"
-                sx={{
-                  backgroundColor: "white",
-                  color: "primary.main",
-                  px: 4,
-                  py: 1.5,
-                  "&:hover": {
-                    backgroundColor: "grey.100",
-                  },
-                }}
-              >
-                Get Started
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                sx={{
-                  borderColor: "white",
-                  color: "white",
-                  px: 4,
-                  py: 1.5,
-                  "&:hover": {
-                    borderColor: "white",
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
-            </Stack>
+              <RotatingText
+                texts={["life", "feelings", "day", "thoughts", "ideas"]}
+                mainClassName="px-3 sm:px-4 md:px-6 bg-white rounded-lg font-bold flex items-center justify-center overflow-hidden"
+                staggerFrom="last"
+                initial={{ y: "100%" }}
+                animate={{ y: 0 }}
+                exit={{ y: "-120%" }}
+                staggerDuration={0.025}
+                splitLevelClassName="flex items-center"
+                transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                rotationInterval={2000}
+                auto={true}
+                loop={true}
+                splitBy="characters"
+                elementLevelClassName="font-bold"
+                style={{ color: "#8e59ff" }}
+              />
+            </motion.div>
           </Box>
-        </Container>
-      </Box>
-      {/* Features Section */}
-      {/* <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
-        <Box textAlign="center" mb={8}>
-          <Typography variant="h2" component="h2" gutterBottom>
-            Everything you need to stay organized
-          </Typography>
-          <Typography
-            variant="h6"
-            color="text.secondary"
-            sx={{ maxWidth: "600px", mx: "auto" }}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={2}
+            justifyContent="center"
+            sx={{ mt: 4 }}
           >
-            Powerful features designed to help you capture, organize, and share
-            your ideas effortlessly.
-          </Typography>
+            <Button
+              variant="contained"
+              size="large"
+              href="/auth"
+              sx={{
+                backgroundColor: "white",
+                color: "primary.main",
+                px: 4,
+                py: 1.5,
+                "&:hover": {
+                  backgroundColor: "grey.100",
+                },
+              }}
+            >
+              Get Started
+            </Button>
+            <Button
+              variant="outlined"
+              size="large"
+              sx={{
+                borderColor: "white",
+                color: "white",
+                px: 4,
+                py: 1.5,
+                "&:hover": {
+                  borderColor: "white",
+                  backgroundColor: "rgba(255, 255, 255, 0.1)",
+                },
+              }}
+            >
+              Sign Up
+            </Button>
+          </Stack>
         </Box>
-
-        <Grid container spacing={4}>
-          {[
-            {
-              icon: <Description sx={{ fontSize: 48 }} />,
-              title: "Rich Text Editing",
-              description:
-                "Powerful TipTap editor with full formatting support, headings, lists, and more.",
-              color: "primary.main",
-            },
-            {
-              icon: <Search sx={{ fontSize: 48 }} />,
-              title: "Smart Search",
-              description:
-                "Find any note instantly with our powerful search that looks through titles, content, and tags.",
-              color: "secondary.main",
-            },
-            {
-              icon: <Tag sx={{ fontSize: 48 }} />,
-              title: "Tag System",
-              description:
-                "Organize notes with custom tags and create your own organizational system.",
-              color: "success.main",
-            },
-            {
-              icon: <Keyboard sx={{ fontSize: 48 }} />,
-              title: "Keyboard Shortcuts",
-              description:
-                "Boost productivity with extensive keyboard shortcuts for formatting and navigation.",
-              color: "warning.main",
-            },
-            {
-              icon: <FlashOn sx={{ fontSize: 48 }} />,
-              title: "Auto-save",
-              description:
-                "Never lose your work. Notes are automatically saved as you type.",
-              color: "info.main",
-            },
-            {
-              icon: <Security sx={{ fontSize: 48 }} />,
-              title: "Secure & Private",
-              description:
-                "Your notes are stored securely with privacy as our top priority.",
-              color: "error.main",
-            },
-          ].map((feature, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index}>
-              <Card
-                sx={{
-                  height: "100%",
-                  transition: "transform 0.2s, box-shadow 0.2s",
-                  "&:hover": {
-                    transform: "translateY(-4px)",
-                    boxShadow: 4,
-                  },
-                }}
-              >
-                <CardContent sx={{ p: 4, textAlign: "center" }}>
-                  <Box sx={{ color: feature.color, mb: 2 }}>{feature.icon}</Box>
-                  <Typography
-                    variant="h5"
-                    component="h3"
-                    gutterBottom
-                    fontWeight={600}
-                  >
-                    {feature.title}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    {feature.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container> */}
-      {/* Footer */}
-      {/* Footer */}
-      {/* <Box
-        sx={{
-          backgroundColor: "grey.100",
-          py: 4,
-        }}
-      >
-        <Container maxWidth="lg">
-          <Typography variant="body2" color="text.secondary" textAlign="center">
-            © 2025 Clearview. Built with Next.js and Material UI.
-          </Typography>
-        </Container>
-      </Box> */}
+      </Box>
     </Box>
   );
 }
