@@ -1,135 +1,307 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Plus, BookOpen, TrendingUp, Heart } from "lucide-react";
-import Link from "next/link";
-import { RecentEntries } from "@/components/ui/recent-entries";
-import { WellbeingStats } from "@/components/ui/wellbeing-stats";
-import { JournalCalendar } from "@/components/ui/journal-calendar";
-import { Navigation } from "@/components/ui/navigation";
-import { MoodChart } from "@/components/ui/mood-chart";
+"use client";
 
-export default function HomePage() {
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import {
+  Plus,
+  Search,
+  Filter,
+  Calendar,
+  Smile,
+  Meh,
+  Frown,
+  BookOpen,
+} from "lucide-react";
+import Link from "next/link";
+import { Navigation } from "@/components/ui/navigation";
+import { useState, useMemo, useEffect, useRef } from "react";
+
+const mockEntries = [
+  {
+    id: 1,
+    title: "A Beautiful Morning",
+    date: "2024-01-15",
+    mood: "happy",
+    preview:
+      "Started the day with a peaceful walk in the park. The morning sun felt so warm and welcoming...",
+    tags: ["gratitude", "nature", "morning"],
+  },
+  {
+    id: 2,
+    title: "Challenging Day at Work",
+    date: "2024-01-14",
+    mood: "stressed",
+    preview:
+      "Had a difficult presentation today, but I learned a lot about handling pressure...",
+    tags: ["work", "growth", "challenges"],
+  },
+  {
+    id: 3,
+    title: "Family Time",
+    date: "2024-01-13",
+    mood: "content",
+    preview:
+      "Spent the evening with family playing board games. These simple moments mean everything...",
+    tags: ["family", "joy", "connection"],
+  },
+  {
+    id: 4,
+    title: "Reflection on Goals",
+    date: "2024-01-12",
+    mood: "thoughtful",
+    preview:
+      "Been thinking about my personal goals and what I want to achieve this year...",
+    tags: ["goals", "planning", "self-reflection"],
+  },
+];
+
+const getMoodIcon = (mood: string) => {
+  switch (mood) {
+    case "happy":
+      return <Smile className="w-4 h-4 text-green-500" />;
+    case "content":
+      return <Smile className="w-4 h-4 text-blue-500" />;
+    case "thoughtful":
+      return <Meh className="w-4 h-4 text-yellow-500" />;
+    case "stressed":
+      return <Frown className="w-4 h-4 text-red-500" />;
+    default:
+      return <Meh className="w-4 h-4 text-gray-500" />;
+  }
+};
+
+export default function JournalPage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        filterRef.current &&
+        !filterRef.current.contains(event.target as Node)
+      ) {
+        setShowFilterDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  // Get all unique tags from entries
+  const allTags = useMemo(() => {
+    const tags = new Set<string>();
+    mockEntries.forEach((entry) => {
+      entry.tags.forEach((tag) => tags.add(tag));
+    });
+    return Array.from(tags).sort();
+  }, []);
+
+  // Filter entries based on search query and selected tags
+  const filteredEntries = useMemo(() => {
+    return mockEntries.filter((entry) => {
+      // Search filter
+      const matchesSearch =
+        searchQuery === "" ||
+        entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        entry.preview.toLowerCase().includes(searchQuery.toLowerCase());
+
+      // Tag filter
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((tag) => entry.tags.includes(tag));
+
+      return matchesSearch && matchesTags;
+    });
+  }, [searchQuery, selectedTags]);
+
+  const toggleTag = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  };
+
+  const clearFilters = () => {
+    setSearchQuery("");
+    setSelectedTags([]);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <Navigation />
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome to Your Wellbeing Journey
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Track your thoughts, emotions, and personal growth in a safe,
-            private space designed for your mental wellness.
-          </p>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Journal Entries
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Your personal reflections and thoughts
+            </p>
+          </div>
+          <Link href="/app/journal/new">
+            <Button className="bg-indigo-600 hover:bg-indigo-700">
+              <Plus className="w-4 h-4 mr-2" />
+              New Entry
+            </Button>
+          </Link>
         </div>
 
-        {/* Quick Actions */}
-        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Link href="/journal/new">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-indigo-200">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
-                  <Plus className="w-6 h-6 text-indigo-600" />
-                </div>
-                <CardTitle className="text-lg">New Entry</CardTitle>
-                <CardDescription>Write about your day</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
+        {/* Search and Filter */}
+        <Card className="mb-8">
+          <CardContent className="pt-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Input
+                  placeholder="Search your entries..."
+                  className="pl-10"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="relative" ref={filterRef}>
+                <Button
+                  variant="outline"
+                  className="sm:w-auto bg-transparent"
+                  onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  Filter {selectedTags.length > 0 && `(${selectedTags.length})`}
+                </Button>
 
-          <Link href="/journal">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-green-200">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
-                  <BookOpen className="w-6 h-6 text-green-600" />
-                </div>
-                <CardTitle className="text-lg">View Entries</CardTitle>
-                <CardDescription>Read past reflections</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
+                {/* Filter Dropdown */}
+                {showFilterDropdown && (
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <h3 className="font-medium text-gray-900">
+                        Filter by Tags
+                      </h3>
+                      {selectedTags.length > 0 && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={clearFilters}
+                          className="text-xs text-gray-500 hover:text-gray-700"
+                        >
+                          Clear all
+                        </Button>
+                      )}
+                    </div>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {allTags.map((tag) => (
+                        <label
+                          key={tag}
+                          className="flex items-center space-x-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={selectedTags.includes(tag)}
+                            onChange={() => toggleTag(tag)}
+                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                          />
+                          <span className="text-sm text-gray-700">{tag}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
 
-          <Link href="/insights">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-200">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
-                </div>
-                <CardTitle className="text-lg">Insights</CardTitle>
-                <CardDescription>Track your progress</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
+            {/* Active Filters Display */}
+            {selectedTags.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                <span className="text-sm text-gray-500">Active filters:</span>
+                {selectedTags.map((tag) => (
+                  <Badge
+                    key={tag}
+                    variant="secondary"
+                    className="text-xs cursor-pointer hover:bg-gray-200"
+                    onClick={() => toggleTag(tag)}
+                  >
+                    {tag} ×
+                  </Badge>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
 
-          <Link href="/calendar">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-orange-200">
-              <CardHeader className="text-center">
-                <div className="mx-auto w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mb-2">
-                  <Calendar className="w-6 h-6 text-orange-600" />
-                </div>
-                <CardTitle className="text-lg">Calendar</CardTitle>
-                <CardDescription>View by date</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        </div> */}
-
-        {/* Dashboard Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Recent Entries */}
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="w-5 h-5" />
-                  Recent Entries
-                </CardTitle>
-                <CardDescription>
-                  Your latest journal reflections
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <RecentEntries />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Wellbeing Stats */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="w-5 h-5" />
-                  Wellbeing Overview
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <WellbeingStats />
-              </CardContent>
-            </Card>
-
-            {/* Mood Chart */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5" />
-                  Mood Trends
-                </CardTitle>
-                <CardDescription>Last 7 days</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <MoodChart />
-              </CardContent>
-            </Card>
-          </div>
+        {/* Entries Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredEntries.map((entry) => (
+            <Link key={entry.id} href={`/journal/${entry.id}`}>
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-gray-500" />
+                      <span className="text-sm text-gray-500">
+                        {entry.date}
+                      </span>
+                    </div>
+                    {getMoodIcon(entry.mood)}
+                  </div>
+                  <CardTitle className="text-lg">{entry.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {entry.preview}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {entry.tags.map((tag) => (
+                      <Badge key={tag} variant="secondary" className="text-xs">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
+          ))}
         </div>
+
+        {/* Empty State (if no entries) */}
+        {filteredEntries.length === 0 && (
+          <Card className="text-center py-12">
+            <CardContent>
+              <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                <BookOpen className="w-8 h-8 text-gray-400" />
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                {mockEntries.length === 0
+                  ? "No entries yet"
+                  : "No matching entries"}
+              </h3>
+              <p className="text-gray-600 mb-6">
+                {mockEntries.length === 0
+                  ? "Start your wellbeing journey by writing your first entry."
+                  : "Try adjusting your search or filter criteria."}
+              </p>
+              {mockEntries.length === 0 ? (
+                <Link href="/journal/new">
+                  <Button>
+                    <Plus className="w-4 h-4 mr-2" />
+                    Write First Entry
+                  </Button>
+                </Link>
+              ) : (
+                <Button onClick={clearFilters} variant="outline">
+                  Clear Filters
+                </Button>
+              )}
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
