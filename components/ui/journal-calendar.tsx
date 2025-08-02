@@ -14,8 +14,8 @@ const mockEntries = {
 };
 
 export function JournalCalendar() {
-  const [currentDate, setCurrentDate] = useState(new Date(2024, 0, 15)); // January 15, 2024
-  const [selectedDate, setSelectedDate] = useState<string | null>("2024-01-15");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -118,7 +118,11 @@ export function JournalCalendar() {
             );
             const entry = mockEntries[dateString as keyof typeof mockEntries];
             const isSelected = selectedDate === dateString;
-            const isToday = dateString === "2024-01-15"; // Mock today's date
+            const today = new Date();
+            const isToday =
+              day === today.getDate() &&
+              currentDate.getMonth() === today.getMonth() &&
+              currentDate.getFullYear() === today.getFullYear();
 
             return (
               <button
@@ -128,14 +132,11 @@ export function JournalCalendar() {
                   isSelected
                     ? "bg-indigo-100 text-indigo-700 border-2 border-indigo-300"
                     : entry
-                    ? "bg-[#e4ce48]/20 text-[#8b59fb] hover:bg-[#e4ce48]/30 border border-[#e4ce48]/40"
+                    ? "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border border-[#e4ce48]/80 font-semibold"
                     : "hover:bg-gray-100 border border-transparent"
-                } ${isToday ? "ring-2 ring-indigo-300" : ""}`}
+                } ${isToday ? "ring-4 ring-[#fb7442] ring-offset-2" : ""}`}
               >
                 {day}
-                {entry && (
-                  <div className="absolute bottom-1 right-1 w-2 h-2 bg-[#e4ce48] rounded-full"></div>
-                )}
               </button>
             );
           })}

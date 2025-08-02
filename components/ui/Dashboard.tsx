@@ -24,11 +24,27 @@ export default function HomePage({ user }: DashboardProps) {
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             How are you{" "}
-            {user?.user_metadata?.full_name ||
+            {user?.user_metadata?.global_name ||
+              user?.user_metadata?.full_name ||
+              user?.user_metadata?.name ||
+              user?.user_metadata?.display_name ||
               user?.email?.split("@")[0] ||
-              "there"}
+              ""}
             ?
           </h1>
+        </div>
+
+        {/* Calendar Section - Moved to Top */}
+        <div className="mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Progress</CardTitle>
+              <CardDescription>Keep it up!</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <JournalCalendar />
+            </CardContent>
+          </Card>
         </div>
 
         {/* Quick Actions */}
@@ -80,19 +96,6 @@ export default function HomePage({ user }: DashboardProps) {
               </CardHeader>
             </Card>
           </Link>
-        </div>
-
-        {/* Calendar Section - Moved to Top */}
-        <div className="mb-12">
-          <Card>
-            <CardHeader>
-              <CardTitle>Journal Calendar</CardTitle>
-              <CardDescription>View entries by date</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <JournalCalendar />
-            </CardContent>
-          </Card>
         </div>
 
         {/* Dashboard Content */}
