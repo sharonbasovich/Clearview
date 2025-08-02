@@ -12,6 +12,8 @@
     "@google/generative-ai": "^0.24.1",
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.5.0",
+    "@react-three/drei": "^10.6.1",
+    "@react-three/fiber": "^9.3.0",
     "@supabase/ssr": "latest",
     "@supabase/supabase-js": "latest",
     "@tiptap/extension-character-count": "^3.0.9",
