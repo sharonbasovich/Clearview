@@ -6,104 +6,42 @@ import {
   Container,
   Paper,
   Typography,
-  TextField,
   Button,
-  Tabs,
-  Tab,
   Stack,
   IconButton,
-  InputAdornment,
-  Divider,
   Alert,
 } from '@mui/material'
 import {
-  Visibility,
-  VisibilityOff,
-  Google,
-  GitHub,
-  Email,
-  Lock,
-  Person,
   ArrowBack,
 } from '@mui/icons-material'
 import { useRouter } from 'next/navigation'
-
-interface TabPanelProps {
-  children?: React.ReactNode
-  index: number
-  value: number
-}
-
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`auth-tabpanel-${index}`}
-      aria-labelledby={`auth-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ py: 3 }}>{children}</Box>}
-    </div>
-  )
-}
+import { createClient } from '@/lib/supabase/client'
 
 export default function AuthPage() {
-  const [tabValue, setTabValue] = useState(0)
-  const [showPassword, setShowPassword] = useState(false)
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    name: '',
-  })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue(newValue)
-    setError('')
-  }
-
-  const handleInputChange = (field: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: event.target.value
-    }))
-  }
-
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+  const handleDiscordAuth = async () => {
     setLoading(true)
     setError('')
-
+    
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: `${window.location.origin}/auth/callback`,
+        },
+      })
       
-      if (tabValue === 1 && formData.password !== formData.confirmPassword) {
-        setError('Passwords do not match')
-        return
+      if (error) {
+        throw error
       }
-
-      // For demo purposes, just navigate to the app
-      router.push('/app')
-    } catch (err) {
-      setError('Authentication failed. Please try again.')
-    } finally {
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during authentication')
       setLoading(false)
     }
-  }
-
-  const handleSocialAuth = (provider: string) => {
-    setLoading(true)
-    // Simulate social auth
-    setTimeout(() => {
-      router.push('/app')
-    }, 1000)
   }
 
   return (
@@ -139,240 +77,68 @@ export default function AuthPage() {
           </IconButton>
 
           {/* Logo/Header */}
-          <Box textAlign="center" mb={3}>
+          <Box textAlign="center" mb={4}>
             <Typography variant="h4" component="h1" fontWeight={700} color="primary" mb={1}>
               NoteCraft
             </Typography>
-            <Typography variant="body1" color="text.secondary">
+            <Typography variant="body1" color="text.secondary" mb={4}>
               Welcome to your digital workspace
+            </Typography>
+            <Typography variant="h5" component="h2" fontWeight={600} mb={2}>
+              Sign in to continue
             </Typography>
           </Box>
 
-          {/* Auth Tabs */}
-          <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
-            <Tabs
-              value={tabValue}
-              onChange={handleTabChange}
-              variant="fullWidth"
-              sx={{
-                '& .MuiTab-root': {
-                  textTransform: 'none',
-                  fontSize: '1rem',
-                  fontWeight: 500,
-                },
-              }}
-            >
-              <Tab label="Sign In" />
-              <Tab label="Sign Up" />
-            </Tabs>
-          </Box>
-
           {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
+            <Alert severity="error" sx={{ mb: 3 }}>
               {error}
             </Alert>
           )}
 
-          {/* Sign In Form */}
-          <TabPanel value={tabValue} index={0}>
-            <form onSubmit={handleSubmit}>
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange('email')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={formData.password}
-                  onChange={handleInputChange('password')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock color="action" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                  disabled={loading}
-                  sx={{ py: 1.5 }}
+          {/* Discord Auth Button */}
+          <Stack spacing={3} alignItems="center">
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              startIcon={
+                <Box
+                  component="svg"
+                  sx={{ width: 24, height: 24 }}
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
                 >
-                  {loading ? 'Signing In...' : 'Sign In'}
-                </Button>
-              </Stack>
-            </form>
-          </TabPanel>
-
-          {/* Sign Up Form */}
-          <TabPanel value={tabValue} index={1}>
-            <form onSubmit={handleSubmit}>
-              <Stack spacing={3}>
-                <TextField
-                  fullWidth
-                  label="Full Name"
-                  required
-                  value={formData.name}
-                  onChange={handleInputChange('name')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Person color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={handleInputChange('email')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Email color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  label="Password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={formData.password}
-                  onChange={handleInputChange('password')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock color="action" />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <TextField
-                  fullWidth
-                  label="Confirm Password"
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange('confirmPassword')}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Lock color="action" />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  size="large"
-                  fullWidth
-                  disabled={loading}
-                  sx={{ py: 1.5 }}
-                >
-                  {loading ? 'Creating Account...' : 'Create Account'}
-                </Button>
-              </Stack>
-            </form>
-          </TabPanel>
-
-          {/* Social Auth */}
-          <Box mt={3}>
-            <Divider sx={{ mb: 3 }}>
-              <Typography variant="body2" color="text.secondary">
-                Or continue with
-              </Typography>
-            </Divider>
-            <Stack spacing={2}>
-              <Button
-                variant="outlined"
-                size="large"
-                fullWidth
-                startIcon={<Google />}
-                onClick={() => handleSocialAuth('google')}
-                disabled={loading}
-                sx={{
-                  py: 1.5,
-                  borderColor: 'grey.300',
-                  color: 'text.primary',
-                  '&:hover': {
-                    borderColor: 'grey.400',
-                    backgroundColor: 'grey.50',
-                  },
-                }}
-              >
-                Continue with Google
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                fullWidth
-                startIcon={<GitHub />}
-                onClick={() => handleSocialAuth('github')}
-                disabled={loading}
-                sx={{
-                  py: 1.5,
-                  borderColor: 'grey.300',
-                  color: 'text.primary',
-                  '&:hover': {
-                    borderColor: 'grey.400',
-                    backgroundColor: 'grey.50',
-                  },
-                }}
-              >
-                Continue with GitHub
-              </Button>
-            </Stack>
-          </Box>
+                  <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419-.0002 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9554 2.4189-2.1568 2.4189Z"/>
+                </Box>
+              }
+              onClick={handleDiscordAuth}
+              disabled={loading}
+              sx={{
+                py: 2,
+                backgroundColor: '#5865F2',
+                '&:hover': {
+                  backgroundColor: '#4752C4',
+                },
+                fontSize: '1.1rem',
+                fontWeight: 600,
+              }}
+            >
+              {loading ? 'Connecting...' : 'Continue with Discord'}
+            </Button>
+            
+            <Typography variant="body2" color="text.secondary" textAlign="center">
+              We use Discord for secure, one-click authentication.
+              <br />
+              Your Discord profile will be used to create your account.
+            </Typography>
+          </Stack>
 
           {/* Terms */}
           <Typography
             variant="body2"
             color="text.secondary"
             textAlign="center"
-            mt={3}
+            mt={4}
           >
             By continuing, you agree to our{' '}
             <Typography component="a" href="#" color="primary" sx={{ textDecoration: 'none' }}>

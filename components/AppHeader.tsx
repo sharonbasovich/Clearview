@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import {
   AppBar,
   Toolbar,
@@ -16,10 +17,32 @@ import {
   Settings,
   Logout,
 } from '@mui/icons-material'
-import { useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
+import { useRouter } from 'next/navigation'
+import type { User } from '@supabase/supabase-js'
 
 export function AppHeader() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
+  const supabase = createClient()
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUser(user)
+    }
+
+    getUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null)
+      }
+    )
+
+    return () => subscription.unsubscribe()
+  }, [supabase.auth])
 
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
@@ -29,9 +52,9 @@ export function AppHeader() {
     setAnchorEl(null)
   }
 
-  const handleSignOut = () => {
-    // For now, just reload the page to go back to landing
-    window.location.reload()
+  const handleSignOut = async () => {
+    await supabase.auth.signOut()
+    router.push('/')
   }
 
   return (
@@ -57,8 +80,11 @@ export function AppHeader() {
           onClick={handleMenuClick}
           color="inherit"
         >
-          <Avatar sx={{ width: 32, height: 32 }}>
-            <AccountCircle />
+          <Avatar 
+            sx={{ width: 32, height: 32 }}
+            src={user?.user_metadata?.avatar_url}
+          >
+            {user?.user_metadata?.full_name?.[0] || <AccountCircle />}
           </Avatar>
         </IconButton>
         
@@ -70,8 +96,8 @@ export function AppHeader() {
         >
           <MenuItem>
             <Typography variant="body2" sx={{ px: 1, py: 0.5 }}>
-              <strong>Guest User</strong><br />
-              <span style={{ color: 'text.secondary' }}>guest@notecraft.app</span>
+              <strong>{user?.user_metadata?.full_name || 'Discord User'}</strong><br />
+              <span style={{ color: 'text.secondary' }}>{user?.email || 'No email'}</span>
             </Typography>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
@@ -84,7 +110,7 @@ export function AppHeader() {
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Back to Landing</ListItemText>
+            <ListItemText>Sign Out</ListItemText>
           </MenuItem>
         </Menu>
       </Toolbar>

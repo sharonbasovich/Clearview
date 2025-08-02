@@ -58,7 +58,7 @@ export default function HomePage() {
         ))}
         <ListItem disablePadding>
           <ListItemButton sx={{ textAlign: 'center' }}>
-            <Button variant="outlined" fullWidth>
+            <Button variant="outlined" fullWidth href="/auth">
               Sign In
             </Button>
           </ListItemButton>
@@ -106,7 +106,7 @@ export default function HomePage() {
                   {item}
                 </Button>
               ))}
-              <Button variant="outlined" sx={{ ml: 2 }}>
+              <Button variant="outlined" sx={{ ml: 2 }} href="/auth">
                 Sign In
               </Button>
               <Button variant="contained" href="/auth">
