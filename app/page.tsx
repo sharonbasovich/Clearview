@@ -33,6 +33,8 @@ import {
 } from "@mui/icons-material";
 import Ballpit from "@/components/ui/Ballpit";
 import SplitText from "@/components/ui/SplitText";
+import RotatingText from "@/components/ui/RotatingText";
+import { motion } from "framer-motion";
 
 export default function HomePage() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -154,7 +156,7 @@ export default function HomePage() {
         }}
       >
         <Ballpit
-          count={100}
+          count={50}
           gravity={0.3}
           friction={0.99}
           wallBounce={0.8}
@@ -281,18 +283,46 @@ export default function HomePage() {
       >
         <Container maxWidth="lg">
           <Box textAlign="center">
-            <Typography
-              variant="h1"
-              component="h1"
-              gutterBottom
+            <Box
               sx={{
                 fontSize: { xs: "2.5rem", md: "4rem" },
                 fontWeight: 700,
                 mb: 3,
+                color: "white",
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: 2,
               }}
             >
-              Your thoughts, beautifully organized
-            </Typography>
+              <span>Journal your</span>
+              <motion.div
+                layout
+                transition={{
+                  layout: { type: "spring", stiffness: 400, damping: 40 },
+                }}
+                style={{ display: "inline-block" }}
+              >
+                <RotatingText
+                  texts={["life", "feelings", "day", "thoughts", "ideas"]}
+                  mainClassName="px-3 sm:px-4 md:px-6 bg-white text-black overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-lg font-bold"
+                  staggerFrom="last"
+                  initial={{ y: "100%" }}
+                  animate={{ y: 0 }}
+                  exit={{ y: "-120%" }}
+                  staggerDuration={0.025}
+                  splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
+                  transition={{ type: "spring", damping: 30, stiffness: 400 }}
+                  rotationInterval={2000}
+                  auto={true}
+                  loop={true}
+                  splitBy="characters"
+                  elementLevelClassName="text-black font-bold"
+                />
+              </motion.div>
+            </Box>
             <Typography
               variant="h5"
               component="p"
@@ -302,6 +332,8 @@ export default function HomePage() {
                 maxWidth: "800px",
                 mx: "auto",
                 lineHeight: 1.6,
+                color: "white",
+                textAlign: "center",
               }}
             >
               Clearview is a powerful, Notion-like note-taking app that helps
