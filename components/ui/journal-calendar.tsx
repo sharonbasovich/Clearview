@@ -5,12 +5,19 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const mockEntries = {
-  "2024-01-15": { title: "A Beautiful Morning", hasEntry: true },
-  "2024-01-14": { title: "Challenging Day at Work", hasEntry: true },
-  "2024-01-13": { title: "Family Time", hasEntry: true },
-  "2024-01-12": { title: "Reflection on Goals", hasEntry: true },
-  "2024-01-10": { title: "Weekend Adventures", hasEntry: true },
-  "2024-01-08": { title: "Quiet Sunday", hasEntry: true },
+  "2025-08-15": { title: "A Beautiful Morning", hasEntry: true },
+  "2025-08-14": { title: "Challenging Day at Work", hasEntry: true },
+  "2025-08-13": { title: "Family Time", hasEntry: true },
+  "2025-08-12": { title: "Reflection on Goals", hasEntry: true },
+  "2025-08-10": { title: "Weekend Adventures", hasEntry: true },
+  "2025-08-08": { title: "Quiet Sunday", hasEntry: true },
+  "2025-08-05": { title: "Productive Day", hasEntry: true },
+  "2025-08-03": { title: "Creative Inspiration", hasEntry: true },
+  "2025-08-01": { title: "New Month Goals", hasEntry: true },
+  "2025-08-20": { title: "Summer Vibes", hasEntry: true },
+  "2025-08-22": { title: "Project Milestone", hasEntry: true },
+  "2025-08-25": { title: "Weekend Getaway", hasEntry: true },
+  "2025-08-28": { title: "Learning New Skills", hasEntry: true },
 };
 
 export function JournalCalendar() {
@@ -92,7 +99,7 @@ export function JournalCalendar() {
 
       {/* Calendar Grid */}
       <div className="space-y-3">
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-0">
           {dayNames.map((day) => (
             <div
               key={day}
@@ -102,7 +109,7 @@ export function JournalCalendar() {
             </div>
           ))}
         </div>
-        <div className="grid grid-cols-7 gap-2">
+        <div className="grid grid-cols-7 gap-0">
           {/* Empty cells for days before the first day of the month */}
           {Array.from({ length: firstDayOfMonth }, (_, i) => (
             <div key={`empty-${i}`} className="h-12"></div>
@@ -128,13 +135,23 @@ export function JournalCalendar() {
               <button
                 key={day}
                 onClick={() => setSelectedDate(dateString)}
-                className={`h-12 text-sm rounded-lg transition-all relative flex items-center justify-center ${
+                className={`h-12 text-sm transition-all relative flex items-center justify-center ${
                   isSelected
-                    ? "bg-indigo-100 text-indigo-700 border-2 border-indigo-300"
+                    ? entry
+                      ? isToday
+                        ? "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#fb7442] font-semibold"
+                        : "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-indigo-300 font-semibold"
+                      : isToday
+                      ? "bg-indigo-100 text-indigo-700 border-2 border-[#fb7442]"
+                      : "bg-indigo-100 text-indigo-700 border-2 border-indigo-300"
                     : entry
-                    ? "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border border-[#e4ce48]/80 font-semibold"
+                    ? isToday
+                      ? "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border-2 border-[#fb7442] font-semibold"
+                      : "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border border-[#e4ce48]/80 font-semibold"
+                    : isToday
+                    ? "hover:bg-gray-100 border-2 border-[#fb7442]"
                     : "hover:bg-gray-100 border border-transparent"
-                } ${isToday ? "ring-4 ring-[#fb7442] ring-offset-2" : ""}`}
+                }`}
               >
                 {day}
               </button>
