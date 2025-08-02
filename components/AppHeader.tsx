@@ -11,11 +11,15 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Button,
+  Box,
 } from '@mui/material'
 import {
   AccountCircle,
   Settings,
   Logout,
+  Notes,
+  Mic,
 } from '@mui/icons-material'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -57,6 +61,14 @@ export function AppHeader() {
     router.push('/')
   }
 
+  const navigateToNotes = () => {
+    router.push('/app')
+  }
+
+  const navigateToVoiceChat = () => {
+    router.push('/voice-chat')
+  }
+
   return (
     <AppBar 
       position="sticky" 
@@ -72,6 +84,44 @@ export function AppHeader() {
         <Typography variant="h6" component="h1" sx={{ flexGrow: 1, fontWeight: 600 }}>
           NoteCraft
         </Typography>
+        
+        {/* Navigation Buttons */}
+        <Box sx={{ display: 'flex', gap: 1, mr: 2 }}>
+          <Button
+            startIcon={<Notes />}
+            onClick={navigateToNotes}
+            variant="outlined"
+            size="small"
+            sx={{ 
+              borderColor: 'divider',
+              color: 'text.primary',
+              '&:hover': {
+                borderColor: 'primary.main',
+                backgroundColor: 'primary.main',
+                color: 'primary.contrastText',
+              }
+            }}
+          >
+            Notes
+          </Button>
+          <Button
+            startIcon={<Mic />}
+            onClick={navigateToVoiceChat}
+            variant="outlined"
+            size="small"
+            sx={{ 
+              borderColor: 'divider',
+              color: 'text.primary',
+              '&:hover': {
+                borderColor: 'secondary.main',
+                backgroundColor: 'secondary.main',
+                color: 'secondary.contrastText',
+              }
+            }}
+          >
+            Voice Chat
+          </Button>
+        </Box>
         
         <IconButton
           size="large"
