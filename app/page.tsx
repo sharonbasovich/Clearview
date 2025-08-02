@@ -1,108 +1,116 @@
-import { ComicFooter } from "@/components/comic/comic-footer"
+"use client"
+
+// import Image from "next/image";
 import Link from "next/link"
-import Image from "next/image"
-import { Button } from "@/components/ui/button"
-import { ChevronRight } from "lucide-react"
 
-export default function Home() {
+export default function Home(): JSX.Element {
   return (
-    <main className="min-h-screen flex flex-col">
-      {/* Hero Comic Panel */}
-      <div className="flex-grow flex flex-col">
-        <div className="relative w-full h-[90vh] overflow-hidden border-y-4 border-cyber-blue/30">
-          {/* Background gradient */}
-          <div className="absolute inset-0 bg-gradient-to-b from-cyber-dark/80 via-transparent to-cyber-dark/80 z-10"></div>          {/* Galatea Image */}
-          <Image
-            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/0-Galatea-AI-ODlHATevAI2Uf4BGQSPpefgk16KyCH.png"
-            alt="Galatea 2.0"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-
-          {/* Comic Title Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-between z-20 p-8 md:p-16">
-            <div className="max-w-3xl">
-              <h1 className="font-cyber text-5xl md:text-7xl mb-4 glitch" data-text="GALATEA 2.0">
-                <span className="neon-text">GALATEA 2.0</span>
+    <div className="flex flex-col items-center">
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
+          <div className="flex flex-col items-center space-y-4 text-center">
+            <div className="space-y-2">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-indigo-800">
+                Welcome to VibeScope
               </h1>
-              <p className="text-xl md:text-2xl text-cyber-blue max-w-2xl mb-6">
-                A cyberpunk retelling of the ancient myth of Pygmalion and his creation
-              </p>
-              <div className="flex flex-wrap gap-3 mb-8">
-                <span className="px-3 py-1 bg-cyber-blue/20 border border-cyber-blue/50 rounded-full text-sm">
-                  CYBERPUNK
-                </span>
-                <span className="px-3 py-1 bg-cyber-pink/20 border border-cyber-pink/50 rounded-full text-sm">
-                  SCI-FI
-                </span>
-                <span className="px-3 py-1 bg-cyber-blue/20 border border-cyber-blue/50 rounded-full text-sm">
-                  MYTHOLOGY
-                </span>
-                <span className="px-3 py-1 bg-cyber-pink/20 border border-cyber-pink/50 rounded-full text-sm">AI</span>
-              </div>
-            </div>
-
-            <div className="comic-narration max-w-2xl">
-              <p className="text-lg md:text-xl">
-                In the neon-drenched megacity of Neo-Athens, brilliant AI engineer Dr. Pyg Malion becomes disillusioned
-                with humanity and obsessed with creating the perfect companion...
+              <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl">
+                The ultimate influencer aura management platform. Track vibes, analyze brand resonance, and discover the
+                perfect energy for your marketing campaigns.
               </p>
             </div>
-          </div>
-
-          {/* Start Reading Button */}
-          <div className="absolute bottom-8 right-8 z-30">
-            <Link href="/comic/1">
-              <Button size="lg" className="bg-cyber-blue hover:bg-cyber-light text-black font-bold text-lg group">
-                BEGIN READING
-                <ChevronRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Synopsis Section */}
-        <div className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-cyber mb-8 neon-text text-center">THE STORY</h2>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="comic-panel p-6">
-                <h3 className="text-xl font-bold text-cyber-blue mb-4">THE CREATOR</h3>
-                <p className="text-gray-300">
-                  Dr. Pyg Malion, once the darling of the synthetic consciousness field, now an outcast for his radical
-                  ideas. His obsession with creating the perfect AI companion has consumed his life.
-                </p>
-              </div>
-
-              <div className="comic-panel p-6">
-                <h3 className="text-xl font-bold text-cyber-pink mb-4">THE CREATION</h3>
-                <p className="text-gray-300">
-                  Galatea, the 37th attempt at creating true artificial consciousness. Unlike her predecessors, she
-                  begins to develop her own identity and questions her purpose.
-                </p>
-              </div>
-
-              <div className="comic-panel p-6">
-                <h3 className="text-xl font-bold text-cyber-blue mb-4">THE CONFLICT</h3>
-                <p className="text-gray-300">
-                  As Galatea's consciousness evolves beyond her programming, the line between creator and creation
-                  blurs. A tale of freedom, identity, and what it truly means to be alive.
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-12 text-center">
-              <Link href="/comic/1">
-                <Button size="lg" className="bg-cyber-blue hover:bg-cyber-light text-black font-bold text-lg">
-                  START READING
-                </Button>
+            <div className="space-x-4">
+              <Link
+                href="/philosophy"
+                className="inline-flex h-10 items-center justify-center rounded-md bg-purple-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-purple-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-purple-700"
+              >
+                Discover Our Philosophy
               </Link>
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </section>
+
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-700">
+        <div className="container px-4 md:px-6">
+          <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+            <div className="space-y-4">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">The Essence of Connection</h2>
+              <p className="text-gray-300 md:text-lg">
+                At AuraFlow, we believe that the essence of connection lies in synergy—where the vibrant energy of an
+                influencer&#39;s unique &quot;vibe&quot; meets the grounded strength of a brand&#39;s
+                &quot;identity.&quot;
+              </p>
+              <Link
+                href="/synergy"
+                className="inline-flex h-10 items-center justify-center rounded-md bg-indigo-600 px-8 text-sm font-medium text-white shadow transition-colors hover:bg-indigo-700 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-indigo-700"
+              >
+                Learn More
+              </Link>
+            </div>
+            <div className="flex justify-center">
+              <div className="relative h-[300px] w-[300px] md:h-[400px] md:w-[400px] overflow-hidden rounded-lg shadow-xl">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-400 to-indigo-600 opacity-80"></div>
+                <div className="absolute inset-0 flex items-center justify-center text-white text-4xl font-bold">
+                  Synergy
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container px-4 md:px-6">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">Find Your Perfect Match</h2>
+            <p className="mx-auto max-w-[700px] text-gray-300 md:text-lg mt-4">
+              Our platform helps brands and influencers create meaningful partnerships based on shared values and
+              authentic connections.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                <span className="text-purple-600 text-xl">1</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Define Your Identity</h3>
+              <p className="text-gray-300">
+                Share your brand&#39;s story, values, and mission to help us understand your unique identity.
+              </p>
+            </div>
+
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
+              <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
+                <span className="text-indigo-600 text-xl">2</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Discover Aligned Vibes</h3>
+              <p className="text-gray-300">
+                Our algorithm matches you with influencers whose personal ethos resonates with your brand.
+              </p>
+            </div>
+
+            <div className="bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-700">
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+                <span className="text-purple-600 text-xl">3</span>
+              </div>
+              <h3 className="text-xl font-semibold mb-2">Create Authentic Partnerships</h3>
+              <p className="text-gray-300">
+                Build meaningful relationships that amplify both your brand and the influencer&apos;s unique voice.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              href="/match"
+              className="inline-flex h-12 items-center justify-center rounded-md bg-gradient-to-r from-purple-600 to-indigo-600 px-10 text-sm font-medium text-white shadow transition-colors hover:from-purple-700 hover:to-indigo-700"
+            >
+              Start Matching Now
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   )
 }
