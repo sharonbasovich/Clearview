@@ -12,6 +12,7 @@
     "@google/generative-ai": "^0.24.1",
     "@mui/icons-material": "^6.4.0",
     "@mui/material": "^6.5.0",
+    "@radix-ui/react-dialog": "^1.1.14",
     "@radix-ui/react-slot": "^1.2.3",
     "@react-three/drei": "^10.6.1",
     "@react-three/fiber": "^9.3.0",
