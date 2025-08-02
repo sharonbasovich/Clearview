@@ -51,8 +51,7 @@ export function NoteEditor() {
     immediatelyRender: false,
     editorProps: {
       attributes: {
-        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[200px] max-w-none',
-        style: 'padding: 16px; min-height: 400px; outline: none;',
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none',
       },
     },
     onUpdate: ({ editor }) => {
@@ -278,12 +277,46 @@ export function NoteEditor() {
         </Toolbar>
 
         {/* Editor Content */}
-        <Box sx={{ flex: 1, overflow: 'auto' }}>
+        <Box 
+          sx={{ 
+            flex: 1, 
+            overflow: 'auto',
+            maxHeight: 'calc(100vh - 400px)', // Constrain height to force scrolling
+            '& .ProseMirror': {
+              outline: 'none !important',
+              padding: '16px',
+              minHeight: '200px',
+              height: 'auto',
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+            },
+            '& .ProseMirror:focus': {
+              outline: 'none !important',
+            },
+            '& .ProseMirror p.is-editor-empty:first-of-type::before': {
+              color: 'text.secondary',
+              content: 'attr(data-placeholder)',
+              float: 'left',
+              height: 0,
+              pointerEvents: 'none',
+            }
+          }}
+        >
           <EditorContent editor={editor} />
         </Box>
 
-        {/* Tags Section */}
-        <Box sx={{ p: 2, borderTop: 1, borderColor: 'divider' }}>
+        {/* Tags Section - Fixed at bottom */}
+        <Box 
+          sx={{ 
+            p: 2, 
+            borderTop: 1, 
+            borderColor: 'divider',
+            flexShrink: 0, // Prevent shrinking
+            position: 'sticky',
+            bottom: 0,
+            backgroundColor: 'background.paper',
+          }}
+        >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
             <Tag sx={{ fontSize: 16, color: 'text.secondary' }} />
             <Typography variant="body2" color="text.secondary">
