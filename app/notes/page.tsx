@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Box, CircularProgress, Container, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { NotesProvider } from "@/contexts/NotesContext";
+import { NotesSidebar } from "@/components/NotesSidebar";
+import { NoteEditor } from "@/components/NoteEditor";
 import { createClient } from "@/lib/supabase/client";
-import type { User } from "@supabase/supabase-js";
-import Dashboard from "@/components/ui/Dashboard";
 import { Navigation } from "@/components/ui/navigation";
+import type { User } from "@supabase/supabase-js";
 
-export default function NotesApp() {
+const DRAWER_WIDTH = 280;
+
+export default function NotesPage() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -66,9 +70,27 @@ export default function NotesApp() {
   }
 
   return (
-    <div>
-      <Navigation />
-      <Dashboard user={user} />
-    </div>
+    <NotesProvider>
+      <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+        <div
+          style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000 }}
+        >
+          <Navigation />
+        </div>
+        <Box
+          sx={{
+            display: "flex",
+            flex: 1,
+            overflow: "hidden",
+            paddingTop: "64px",
+          }}
+        >
+          <Box sx={{ width: DRAWER_WIDTH, flexShrink: 0 }}>
+            <NotesSidebar />
+          </Box>
+          <NoteEditor />
+        </Box>
+      </Box>
+    </NotesProvider>
   );
 }

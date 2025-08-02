@@ -21,7 +21,7 @@ import {
   SmartToy,
   Person,
 } from '@mui/icons-material'
-import { AppHeader } from '@/components/AppHeader'
+import Navigation from '@/components/ui/navigation'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import type { User } from '@supabase/supabase-js'
@@ -451,7 +451,9 @@ export default function VoiceChatPage() {
 
   return (
     <Box sx={{ minHeight: '100vh', backgroundColor: 'grey.50' }}>
-      <AppHeader />
+      <div style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000 }}>
+        <Navigation />
+      </div>
       
       <Container maxWidth="md" sx={{ pt: 10, pb: 4 }}>
         {/* Header */}
