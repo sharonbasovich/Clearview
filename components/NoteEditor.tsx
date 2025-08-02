@@ -48,6 +48,7 @@ export function NoteEditor() {
       }),
     ],
     content: currentNote?.content || '',
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none min-h-[200px] max-w-none',
