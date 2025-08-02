@@ -171,7 +171,7 @@ export default function HomePage() {
         position="fixed"
         elevation={0}
         sx={{
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backgroundColor: "rgba(255, 255, 255, 1)",
           backdropFilter: "blur(10px)",
           borderBottom: "1px solid rgba(0, 0, 0, 0.08)",
           zIndex: 1000,
@@ -307,39 +307,23 @@ export default function HomePage() {
               >
                 <RotatingText
                   texts={["life", "feelings", "day", "thoughts", "ideas"]}
-                  mainClassName="px-3 sm:px-4 md:px-6 bg-white text-black overflow-hidden py-1 sm:py-2 md:py-3 justify-center rounded-lg font-bold"
+                  mainClassName="px-3 sm:px-4 md:px-6 bg-white rounded-lg font-bold flex items-center justify-center overflow-hidden"
                   staggerFrom="last"
                   initial={{ y: "100%" }}
                   animate={{ y: 0 }}
                   exit={{ y: "-120%" }}
                   staggerDuration={0.025}
-                  splitLevelClassName="overflow-hidden pb-1 sm:pb-2 md:pb-3"
+                  splitLevelClassName="flex items-center"
                   transition={{ type: "spring", damping: 30, stiffness: 400 }}
                   rotationInterval={2000}
                   auto={true}
                   loop={true}
                   splitBy="characters"
-                  elementLevelClassName="text-black font-bold"
+                  elementLevelClassName="font-bold"
+                  style={{ color: "#8e59ff" }}
                 />
               </motion.div>
             </Box>
-            <Typography
-              variant="h5"
-              component="p"
-              sx={{
-                mb: 4,
-                opacity: 0.9,
-                maxWidth: "800px",
-                mx: "auto",
-                lineHeight: 1.6,
-                color: "white",
-                textAlign: "center",
-              }}
-            >
-              Clearview is a powerful, Notion-like note-taking app that helps
-              you capture ideas, organize thoughts, and boost productivity with
-              rich text editing and smart organization.
-            </Typography>
             <Stack
               direction={{ xs: "column", sm: "row" }}
               spacing={2}
@@ -360,7 +344,7 @@ export default function HomePage() {
                   },
                 }}
               >
-                Get Started Free
+                Get Started
               </Button>
               <Button
                 variant="outlined"
@@ -376,14 +360,14 @@ export default function HomePage() {
                   },
                 }}
               >
-                Watch Demo
+                Sign Up
               </Button>
             </Stack>
           </Box>
         </Container>
       </Box>
       {/* Features Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+      {/* <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
         <Box textAlign="center" mb={8}>
           <Typography variant="h2" component="h2" gutterBottom>
             Everything you need to stay organized
@@ -472,10 +456,10 @@ export default function HomePage() {
             </Grid>
           ))}
         </Grid>
-      </Container>
+      </Container> */}
       {/* Footer */}
       {/* Footer */}
-      <Box
+      {/* <Box
         sx={{
           backgroundColor: "grey.100",
           py: 4,
@@ -486,7 +470,7 @@ export default function HomePage() {
             © 2025 Clearview. Built with Next.js and Material UI.
           </Typography>
         </Container>
-      </Box>
+      </Box> */}
     </Box>
   );
 }
