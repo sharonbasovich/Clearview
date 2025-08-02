@@ -39,6 +39,7 @@ export default function AuthPage() {
         throw error
       }
     } catch (err: any) {
+      console.error('Auth error:', err)
       setError(err.message || 'An error occurred during authentication')
       setLoading(false)
     }
