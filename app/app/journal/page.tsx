@@ -77,7 +77,27 @@ export default function JournalPage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
   const filterRef = useRef<HTMLDivElement>(null);
+  const [realEntries, setRealEntries] = useState<any[]>();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`/api/journal-entries`);
+      const data = await result.json();
+      const temp: any[] = [];
+
+      data.forEach((entry: any) => {
+        temp.push({
+          _id: entry._id,
+          title: entry.title,
+          tags: entry.tags,
+          date: entry.createdAt,
+          preview: entry.content.slice(0, 100) + "...",
+        });
+      });
+      setRealEntries(temp);
+    };
+    fetchData();
+  }, []);
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -98,29 +118,29 @@ export default function JournalPage() {
   // Get all unique tags from entries
   const allTags = useMemo(() => {
     const tags = new Set<string>();
-    mockEntries.forEach((entry) => {
-      entry.tags.forEach((tag) => tags.add(tag));
+    realEntries?.forEach((entry) => {
+      entry.tags?.forEach?.((tag: any) => tags.add(tag)); // Add null check with optional chaining
     });
     return Array.from(tags).sort();
-  }, []);
+  }, [realEntries]);
 
   // Filter entries based on search query and selected tags
   const filteredEntries = useMemo(() => {
-    return mockEntries.filter((entry) => {
+    return realEntries?.filter((entry) => {
       // Search filter
       const matchesSearch =
         searchQuery === "" ||
         entry.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         entry.preview.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Tag filter
+      // Tag filter with null check
       const matchesTags =
         selectedTags.length === 0 ||
-        selectedTags.some((tag) => entry.tags.includes(tag));
+        selectedTags.some((tag) => entry.tags?.includes(tag));
 
       return matchesSearch && matchesTags;
     });
-  }, [searchQuery, selectedTags]);
+  }, [searchQuery, selectedTags, realEntries]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -238,27 +258,26 @@ export default function JournalPage() {
 
         {/* Entries Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEntries.map((entry) => (
-            <Link key={entry.id} href={`/journal/${entry.id}`}>
+          {filteredEntries?.map((entry) => (
+            <Link key={entry._id} href={`/app/journal/${entry._id}`}>
               <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Calendar className="w-4 h-4 text-gray-500" />
                       <span className="text-sm text-gray-500">
-                        {entry.date}
+                        {new Date(entry.date).toLocaleDateString()}
                       </span>
                     </div>
-                    {getMoodIcon(entry.mood)}
                   </div>
                   <CardTitle className="text-lg">{entry.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                    {entry.preview}
+                    {entry.preview.replace(/<[^>]*>/g, "")}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {entry.tags.map((tag) => (
+                    {entry.tags?.map((tag: string) => ( // Add optional chaining here
                       <Badge key={tag} variant="secondary" className="text-xs">
                         {tag}
                       </Badge>
@@ -271,23 +290,23 @@ export default function JournalPage() {
         </div>
 
         {/* Empty State (if no entries) */}
-        {filteredEntries.length === 0 && (
+        {filteredEntries?.length === 0 && (
           <Card className="text-center py-12">
             <CardContent>
               <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                 <BookOpen className="w-8 h-8 text-gray-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {mockEntries.length === 0
+                {realEntries?.length === 0
                   ? "No entries yet"
                   : "No matching entries"}
               </h3>
               <p className="text-gray-600 mb-6">
-                {mockEntries.length === 0
+                {realEntries?.length === 0
                   ? "Start your wellbeing journey by writing your first entry."
                   : "Try adjusting your search or filter criteria."}
               </p>
-              {mockEntries.length === 0 ? (
+              {realEntries?.length === 0 ? (
                 <Link href="/journal/new">
                   <Button>
                     <Plus className="w-4 h-4 mr-2" />

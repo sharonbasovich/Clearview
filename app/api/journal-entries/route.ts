@@ -24,12 +24,18 @@ export async function POST(request: Request) {
     const client = new MongoClient(uri);
     await client.connect();
     const db = client.db("journal_app");
-    const entry = await request.json();
+    
+    // Fix: Destructure the entry object first
+    const { entry } = await request.json();
+    
     const result = await db.collection("journal_entries").insertOne({
-      entries: entry,
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      title: entry.title,
+      content: entry.content,  // Note: changed from editorContent to content to match the client
+      tags: entry.tags,
+      createdAt: entry.createdAt,
     });
+    
+    await client.close(); // Don't forget to close the connection
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error posting journal entry:", error);
