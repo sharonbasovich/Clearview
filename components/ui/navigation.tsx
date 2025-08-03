@@ -73,7 +73,7 @@ export function Navigation() {
             })}
 
             {/* New Entry Button */}
-            <Link href="/app/journal/new">
+            <Link href="/app/new-entry">
               <Button className="bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
                 <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
                 <span>New Entry</span>
@@ -120,7 +120,7 @@ export function Navigation() {
                 })}
 
                 {/* New Entry Button for Mobile */}
-                <Link href="/notes" onClick={() => setIsOpen(false)}>
+                <Link href="/app/new-entry" onClick={() => setIsOpen(false)}>
                   <Button className="w-full bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
                     <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
                     <span>New Entry</span>
