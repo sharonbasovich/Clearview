@@ -179,8 +179,18 @@ export default function HomePage() {
         }}
       >
         <Toolbar sx={{ py: 2 }}>
-          <Stack direction="row" spacing={2} alignItems="center" sx={{ flexGrow: 1 }}>
-            <Image src="/icon.png" alt="Clearview Logo" width={40} height={40} />
+          <Stack
+            direction="row"
+            spacing={2}
+            alignItems="center"
+            sx={{ flexGrow: 1 }}
+          >
+            <Image
+              src="/icon.png"
+              alt="Clearview Logo"
+              width={40}
+              height={40}
+            />
             <SplitText
               text="Clearview"
               className="text-3xl font-bold split-text-blue"
@@ -196,33 +206,6 @@ export default function HomePage() {
 
           {!isMobile && (
             <Stack direction="row" spacing={2} alignItems="center">
-              {/* <Button
-                variant="outlined"
-                size="large"
-                sx={{
-                  borderColor: "#FFB33B",
-                  color: "#FFB33B",
-                  fontSize: "1.1rem",
-                  px: 3,
-                  py: 1.5,
-                  "&:hover": {
-                    borderColor: "#FFB33B",
-                    backgroundColor: "rgba(255, 179, 59, 0.1)",
-                  },
-                }}
-                href="/auth"
-              >
-                <SplitText
-                  text="Sign In"
-                  delay={100}
-                  duration={0.6}
-                  from={{ opacity: 0, scale: 0.8 }}
-                  to={{ opacity: 1, scale: 1 }}
-                  threshold={0.1}
-                  rootMargin="-30px"
-                  className="split-text-orange"
-                />
-              </Button> */}
               <Button
                 variant="contained"
                 size="large"
@@ -251,15 +234,30 @@ export default function HomePage() {
           )}
 
           {isMobile && (
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ color: "text.primary" }}
+            <Button
+              variant="contained"
+              size="large"
+              sx={{
+                backgroundColor: "#FFB33B",
+                fontSize: "1.1rem",
+                px: 3,
+                py: 1.5,
+                "&:hover": {
+                  backgroundColor: "#E6A32E",
+                },
+              }}
+              href="/auth"
             >
-              <MenuIcon />
-            </IconButton>
+              <SplitText
+                text="Get Started"
+                delay={150}
+                duration={0.6}
+                from={{ opacity: 0, scale: 0.8 }}
+                to={{ opacity: 1, scale: 1 }}
+                threshold={0.1}
+                rootMargin="-30px"
+              />
+            </Button>
           )}
         </Toolbar>
       </AppBar>
@@ -294,18 +292,18 @@ export default function HomePage() {
             background:
               "linear-gradient(135deg, rgba(250,119,66, 0.8) 0%, rgba(254,203,43, 0.8) 100%)",
             color: "white",
-            px: { xs: 4, md: 8 },
-            py: { xs: 6, md: 8 },
+            px: { xs: 2, md: 8 },
+            py: { xs: 4, md: 8 },
             borderRadius: 4,
             backdropFilter: "blur(5px)",
             textAlign: "center",
-            maxWidth: "800px",
+            maxWidth: { xs: "90%", md: "800px" },
             mx: 2,
           }}
         >
           <Box
             sx={{
-              fontSize: { xs: "2.5rem", md: "4rem" },
+              fontSize: { xs: "2rem", md: "4rem" },
               fontWeight: 700,
               mb: 0,
               color: "white",
@@ -313,9 +311,9 @@ export default function HomePage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              flexWrap: "nowrap",
-              gap: 2,
-              minHeight: { xs: "5rem", md: "8rem" },
+              flexWrap: { xs: "wrap", md: "nowrap" },
+              gap: { xs: 1, md: 2 },
+              minHeight: { xs: "6rem", md: "8rem" },
               overflow: "visible",
             }}
           >
@@ -350,45 +348,6 @@ export default function HomePage() {
               />
             </motion.div>
           </Box>
-          {/* <Stack
-            direction={{ xs: "column", sm: "row" }}
-            spacing={2}
-            justifyContent="center"
-            sx={{ mt: 4 }}
-          >
-            <Button
-              variant="contained"
-              size="large"
-              href="/auth"
-              sx={{
-                backgroundColor: "white",
-                color: "primary.main",
-                px: 4,
-                py: 1.5,
-                "&:hover": {
-                  backgroundColor: "grey.100",
-                },
-              }}
-            >
-              Get Started
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              sx={{
-                borderColor: "white",
-                color: "white",
-                px: 4,
-                py: 1.5,
-                "&:hover": {
-                  borderColor: "white",
-                  backgroundColor: "rgba(255, 255, 255, 0.1)",
-                },
-              }}
-            >
-              Sign Up
-            </Button>
-          </Stack> */}
         </Box>
       </Box>
     </Box>
