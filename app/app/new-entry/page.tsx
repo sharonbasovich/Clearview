@@ -88,18 +88,18 @@ export default function NewEntryPage() {
 
         {/* Options Grid */}
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
             {/* Journal Entry Option */}
             <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#8b59fb]/50">
               <Link href="/app/journal/new" className="block">
-                <CardHeader className="text-center pb-4">
-                  <div className="mx-auto mb-4 w-24 h-24 bg-gradient-to-br from-[#3aa0f7] to-[#8b59fb] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <BookOpen className="w-12 h-12 text-white" />
+                <CardHeader className="text-center pb-2 md:pb-4">
+                  <div className="mx-auto mb-2 md:mb-4 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-[#3aa0f7] to-[#8b59fb] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <BookOpen className="w-8 h-8 md:w-12 md:h-12 text-white" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900">
+                  <CardTitle className="text-xl md:text-2xl font-bold text-gray-900">
                     Write Journal Entry
                   </CardTitle>
-                  <CardDescription className="text-lg text-gray-600">
+                  <CardDescription className="text-sm md:text-lg text-gray-600">
                     Express your thoughts through writing with rich text formatting
                   </CardDescription>
                 </CardHeader>
@@ -113,14 +113,14 @@ export default function NewEntryPage() {
             {/* Voice Chat Option */}
             <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#8b59fb]/50">
               <Link href="/voice-chat" className="block">
-                <CardHeader className="text-center pb-4">
-                  <div className="mx-auto mb-4 w-24 h-24 bg-gradient-to-br from-[#5b5bfb] to-[#8b59fb] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <Mic className="w-12 h-12 text-white" />
+                <CardHeader className="text-center pb-2 md:pb-4">
+                  <div className="mx-auto mb-2 md:mb-4 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-[#5b5bfb] to-[#8b59fb] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <Mic className="w-8 h-8 md:w-12 md:h-12 text-white" />
                   </div>
-                  <CardTitle className="text-2xl font-bold text-gray-900">
+                  <CardTitle className="text-xl md:text-2xl font-bold text-gray-900">
                     Voice Chat
                   </CardTitle>
-                  <CardDescription className="text-lg text-gray-600">
+                  <CardDescription className="text-sm md:text-lg text-gray-600">
                     Have a conversation with AI through voice interaction
                   </CardDescription>
                 </CardHeader>
