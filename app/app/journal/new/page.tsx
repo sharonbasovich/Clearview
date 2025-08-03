@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -55,6 +55,9 @@ export default function NewEntryPage() {
   const [recognition, setRecognition] = useState<any>(
     null
   );
+  // AI suggestion state and typing debounce
+  const [suggestion, setSuggestion] = useState<string>("");
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`/api/journal-entries`);
@@ -140,7 +143,34 @@ export default function NewEntryPage() {
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       // Update the content state to trigger re-render
-      setEditorContent(editor.getHTML());
+      const html = editor.getHTML();
+      setEditorContent(html);
+
+      // Clear current suggestion when user is typing
+      setSuggestion("");
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      const plainText = editor.getText().trim();
+      if (plainText.split(/\s+/).length >= 3) {
+        // Trigger suggestion after 2s pause
+        typingTimeoutRef.current = setTimeout(async () => {
+          try {
+            const res = await fetch("/api/ai-suggestion", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ content: plainText }),
+            });
+            const data = await res.json();
+            if (data.suggestion) {
+              setSuggestion(data.suggestion);
+            }
+          } catch (err) {
+            console.error("Failed to fetch AI suggestion", err);
+          }
+        }, 2000); // 2 second pause
+      }
     },
     editorProps: {
       attributes: {
@@ -468,11 +498,17 @@ export default function NewEntryPage() {
                     {editor.storage.characterCount.characters()} characters
                   </div>
                 )}
-              </div>
+
+              </div> {/* end toolbar */}
 
               {/* Editor Content */}
-              <div className="min-h-[400px]">
+              <div className="min-h-[400px] relative">
                 <EditorContent editor={editor} />
+                {suggestion && (
+                  <div className="absolute left-4 right-4 top-full mt-2 text-gray-400 italic pointer-events-none">
+                    {suggestion}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
