@@ -463,62 +463,68 @@ export default function NewEntryPage() {
             </CardHeader>
             <CardContent className="p-0">
               {/* Editor Toolbar */}
-              <div className="flex items-center gap-1 p-3 border-b bg-gray-50">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => editor?.chain().focus().undo().run()}
-                  disabled={!editor?.can().undo()}
-                >
-                  <Undo className="w-4 h-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => editor?.chain().focus().redo().run()}
-                  disabled={!editor?.can().redo()}
-                >
-                  <Redo className="w-4 h-4" />
-                </Button>
-
-                <div className="w-px h-6 bg-gray-300 mx-2" />
-
-                {formatCommands.map((command) => (
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-1 p-3 border-b bg-gray-50">
+                {/* First row: Undo/Redo and Format commands */}
+                <div className="flex items-center gap-1">
                   <Button
-                    key={command.label}
-                    variant={command.isActive() ? "default" : "ghost"}
+                    variant="ghost"
                     size="sm"
-                    onClick={command.action}
-                    title={command.label}
+                    onClick={() => editor?.chain().focus().undo().run()}
+                    disabled={!editor?.can().undo()}
                   >
-                    {command.icon}
+                    <Undo className="w-4 h-4" />
                   </Button>
-                ))}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => editor?.chain().focus().redo().run()}
+                    disabled={!editor?.can().redo()}
+                  >
+                    <Redo className="w-4 h-4" />
+                  </Button>
 
-                <div className="w-px h-6 bg-gray-300 mx-2" />
+                  <div className="w-px h-6 bg-gray-300 mx-2" />
 
-                <Button
-                  variant={isListening ? "destructive" : "outline"}
-                  size="sm"
-                  onClick={toggleVoiceInput}
-                  title={isListening ? "Stop voice input" : "Start voice input"}
-                  className={isListening ? "animate-pulse" : ""}
-                >
-                  {isListening ? (
-                    <MicOff className="w-4 h-4" />
-                  ) : (
-                    <Mic className="w-4 h-4" />
-                  )}
-                  {isListening ? "Stop Transcribing" : "Start Transcribing"}
-                </Button>
+                  {formatCommands.map((command) => (
+                    <Button
+                      key={command.label}
+                      variant={command.isActive() ? "default" : "ghost"}
+                      size="sm"
+                      onClick={command.action}
+                      title={command.label}
+                    >
+                      {command.icon}
+                    </Button>
+                  ))}
+                </div>
 
-                {editor && (
-                  <div className="ml-auto text-xs text-gray-500 flex items-center gap-4">
-                    <span>
-                      {editor.storage.characterCount.characters()} characters
+                {/* Second row: Voice input and character count */}
+                <div className="flex items-center justify-between w-full sm:w-auto sm:ml-auto gap-2">
+                  <Button
+                    variant={isListening ? "destructive" : "ghost"}
+                    size="sm"
+                    onClick={toggleVoiceInput}
+                    title={
+                      isListening ? "Stop voice input" : "Start voice input"
+                    }
+                    className={isListening ? "animate-pulse" : ""}
+                  >
+                    {isListening ? (
+                      <MicOff className="w-4 h-4" />
+                    ) : (
+                      <Mic className="w-4 h-4" />
+                    )}
+                    <span className="ml-2 text-xs">
+                      {isListening ? "Stop Transcribing" : "Start Transcribing"}
                     </span>
-                  </div>
-                )}
+                  </Button>
+
+                  {editor && (
+                    <div className="text-xs text-gray-500">
+                      {editor.storage.characterCount.characters()} characters
+                    </div>
+                  )}
+                </div>
               </div>{" "}
               {/* end toolbar */}
               {/* Editor Content */}
@@ -540,10 +546,6 @@ export default function NewEntryPage() {
                 )}
               </div>
             </CardContent>
-          </Card>
-
-          {/* Save Button */}
-          <Card className="w-full">
             <CardContent className="pt-6">
               <Button
                 className="w-full bg-[#3aa0f7] hover:bg-[#3aa0f7]/80"
