@@ -58,7 +58,7 @@ export function Navigation() {
             })}
 
             {/* New Entry Button */}
-            <Link href="/notes">
+            <Link href="/journal/new">
               <Button className="bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
                 <Plus className="w-4 h-4 mr-2" />
                 New Entry
