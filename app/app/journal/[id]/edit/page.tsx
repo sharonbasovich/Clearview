@@ -97,7 +97,7 @@ export default function EditEntryPage() {
         title: title,
         content: editorContent,
         tags: tags,
-        updatedAt: new Date().toISOString(),
+        updatedAt: new Date().toLocaleDateString(),
       };
 
       const response = await fetch(`/api/journal-entries/${id}`, {
