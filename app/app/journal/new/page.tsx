@@ -57,6 +57,7 @@ export default function NewEntryPage() {
   );
   // AI suggestion state and typing debounce
   const [suggestion, setSuggestion] = useState<string>("");
+  const [suggestionStatus, setSuggestionStatus] = useState<"idle" | "waiting" | "fetching">("idle");
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   useEffect(() => {
     const fetchData = async () => {
@@ -148,14 +149,17 @@ export default function NewEntryPage() {
 
       // Clear current suggestion when user is typing
       setSuggestion("");
+      setSuggestionStatus("idle");
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
       }
 
       const plainText = editor.getText().trim();
       if (plainText.split(/\s+/).length >= 3) {
+        setSuggestionStatus("waiting");
         // Trigger suggestion after 2s pause
         typingTimeoutRef.current = setTimeout(async () => {
+          setSuggestionStatus("fetching");
           try {
             const res = await fetch("/api/ai-suggestion", {
               method: "POST",
@@ -166,6 +170,7 @@ export default function NewEntryPage() {
             if (data.suggestion) {
               setSuggestion(data.suggestion);
             }
+            setSuggestionStatus("idle");
           } catch (err) {
             console.error("Failed to fetch AI suggestion", err);
           }
@@ -494,8 +499,12 @@ export default function NewEntryPage() {
                 </Button>
 
                 {editor && (
-                  <div className="ml-auto text-xs text-gray-500">
-                    {editor.storage.characterCount.characters()} characters
+                  <div className="ml-auto text-xs text-gray-500 flex items-center gap-4">
+                    <span>
+                      {suggestionStatus === "waiting" && "Pause to get suggestion"}
+                      {suggestionStatus === "fetching" && "Getting suggestion..."}
+                    </span>
+                    <span>{editor.storage.characterCount.characters()} characters</span>
                   </div>
                 )}
 
@@ -505,7 +514,7 @@ export default function NewEntryPage() {
               <div className="min-h-[400px] relative">
                 <EditorContent editor={editor} />
                 {suggestion && (
-                  <div className="absolute left-4 right-4 top-full mt-2 text-gray-400 italic pointer-events-none">
+                  <div className="absolute left-4 right-4 bottom-2 text-gray-400 italic pointer-events-none">
                     {suggestion}
                   </div>
                 )}
