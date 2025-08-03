@@ -2,7 +2,11 @@
 
 import type React from "react";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Placeholder from "@tiptap/extension-placeholder";
+import CharacterCount from "@tiptap/extension-character-count";
 import {
   Card,
   CardContent,
@@ -12,28 +16,53 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Slider } from "@/components/ui/slider";
-import { Save, ArrowLeft, Smile, Meh, Frown, Heart, X } from "lucide-react";
+import {
+  Save,
+  ArrowLeft,
+  X,
+  Bold,
+  Italic,
+  List,
+  ListOrdered,
+  Quote,
+  Code,
+  Undo,
+  Redo,
+} from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/ui/navigation";
 
-const moodOptions = [
-  { value: 1, label: "Very Sad", icon: Frown, color: "text-red-500" },
-  { value: 2, label: "Sad", icon: Frown, color: "text-orange-500" },
-  { value: 3, label: "Neutral", icon: Meh, color: "text-yellow-500" },
-  { value: 4, label: "Happy", icon: Smile, color: "text-green-500" },
-  { value: 5, label: "Very Happy", icon: Smile, color: "text-emerald-500" },
-];
-
 export default function NewEntryPage() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [mood, setMood] = useState([3]);
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
-  const [gratitude, setGratitude] = useState("");
+  const [editorContent, setEditorContent] = useState("");
+
+  // Rich text editor setup
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: "Dear journal...",
+      }),
+      CharacterCount.configure({
+        limit: 10000,
+      }),
+    ],
+    content: "",
+    immediatelyRender: false,
+    onUpdate: ({ editor }) => {
+      // Update the content state to trigger re-render
+      setEditorContent(editor.getHTML());
+    },
+    editorProps: {
+      attributes: {
+        class:
+          "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl mx-auto focus:outline-none max-w-none min-h-[400px] p-4",
+      },
+    },
+  });
 
   const addTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -53,177 +82,253 @@ export default function NewEntryPage() {
     }
   };
 
-  const currentMood = moodOptions.find((option) => option.value === mood[0]);
+  // Editor toolbar commands
+  const formatCommands = [
+    {
+      label: "Bold",
+      icon: <Bold className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleBold().run(),
+      isActive: () => editor?.isActive("bold"),
+    },
+    {
+      label: "Italic",
+      icon: <Italic className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleItalic().run(),
+      isActive: () => editor?.isActive("italic"),
+    },
+    {
+      label: "Quote",
+      icon: <Quote className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleBlockquote().run(),
+      isActive: () => editor?.isActive("blockquote"),
+    },
+    {
+      label: "Code",
+      icon: <Code className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleCode().run(),
+      isActive: () => editor?.isActive("code"),
+    },
+    {
+      label: "Bullet List",
+      icon: <List className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleBulletList().run(),
+      isActive: () => editor?.isActive("bulletList"),
+    },
+    {
+      label: "Numbered List",
+      icon: <ListOrdered className="w-4 h-4" />,
+      action: () => editor?.chain().focus().toggleOrderedList().run(),
+      isActive: () => editor?.isActive("orderedList"),
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       <Navigation />
       <div className="container mx-auto px-4 py-8 pt-24">
-        {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
+        <style jsx global>{`
+          .ProseMirror {
+            outline: none !important;
+            padding: 16px;
+            min-height: 400px;
+            height: auto;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+          }
+          .ProseMirror:focus {
+            outline: none !important;
+          }
+          .ProseMirror p.is-editor-empty:first-of-type::before {
+            color: #6b7280;
+            content: attr(data-placeholder);
+            float: left;
+            height: 0;
+            pointer-events: none;
+          }
+          .ProseMirror h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+          }
+          .ProseMirror h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+          }
+          .ProseMirror h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 1rem 0 0.5rem 0;
+          }
+          .ProseMirror blockquote {
+            border-left: 3px solid #e5e7eb;
+            margin: 1rem 0;
+            padding-left: 1rem;
+            font-style: italic;
+            color: #6b7280;
+          }
+          .ProseMirror code {
+            background-color: #f3f4f6;
+            padding: 0.125rem 0.25rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+          }
+          .ProseMirror ul,
+          .ProseMirror ol {
+            padding-left: 1.5rem;
+            margin: 0.5rem 0;
+          }
+          .ProseMirror li {
+            margin: 0.25rem 0;
+          }
+        `}</style>
+        {/* Back Button */}
+        <div className="mb-6">
           <Link href="/app/journal">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Journal
             </Button>
           </Link>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              New Journal Entry
-            </h1>
-            <p className="text-gray-600 mt-1">
-              Capture your thoughts and feelings
-            </p>
-          </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">
+            New Journal Entry
+          </h1>
+          <p className="text-gray-600 mt-1">
+            Capture your thoughts and feelings
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {/* Title and Tags Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Title */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Entry Title</CardTitle>
-                <CardDescription>
-                  Give your entry a meaningful title
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Input
-                  placeholder="What's on your mind today?"
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="text-lg"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Content */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Your Thoughts</CardTitle>
-                <CardDescription>
-                  Write freely about your day, feelings, or experiences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  placeholder="Dear journal..."
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  className="min-h-[300px] text-base leading-relaxed"
-                />
-              </CardContent>
-            </Card>
-
-            {/* Gratitude */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="w-5 h-5 text-red-500" />
-                  Gratitude
-                </CardTitle>
-                <CardDescription>
-                  What are you grateful for today?
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Textarea
-                  placeholder="I'm grateful for..."
-                  value={gratitude}
-                  onChange={(e) => setGratitude(e.target.value)}
-                  className="min-h-[100px]"
-                />
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Mood Tracker */}
-            <Card>
-              <CardHeader>
-                <CardTitle>How are you feeling?</CardTitle>
-                <CardDescription>Rate your overall mood today</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="text-center">
-                  {currentMood && (
-                    <div className="flex flex-col items-center gap-2">
-                      <currentMood.icon
-                        className={`w-12 h-12 ${currentMood.color}`}
-                      />
-                      <span className="font-medium">{currentMood.label}</span>
-                    </div>
-                  )}
-                </div>
-                <Slider
-                  value={mood}
-                  onValueChange={setMood}
-                  max={5}
-                  min={1}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="flex justify-between text-xs text-gray-500">
-                  <span>Very Sad</span>
-                  <span>Very Happy</span>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="lg:col-span-2">
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle>Entry Title</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-1">
+                  <Input
+                    placeholder="What's on your mind today?"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    className="text-lg"
+                  />
+                </CardContent>
+              </Card>
+            </div>
 
             {/* Tags */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Tags</CardTitle>
-                <CardDescription>
-                  Add tags to categorize your entry
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Add a tag..."
-                    value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    className="flex-1"
-                  />
-                  <Button onClick={addTag} size="sm">
-                    Add
-                  </Button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="flex items-center gap-1"
-                    >
-                      {tag}
-                      <X
-                        className="w-3 h-3 cursor-pointer hover:text-red-500"
-                        onClick={() => removeTag(tag)}
-                      />
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Save Button */}
-            <Card>
-              <CardContent className="pt-6">
-                <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Entry
-                </Button>
-                <p className="text-xs text-gray-500 text-center mt-2">
-                  Your entries are private and secure
-                </p>
-              </CardContent>
-            </Card>
+            <div>
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle>Tags</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4 flex-1">
+                  <div className="flex gap-2">
+                    <Input
+                      placeholder="Add a tag..."
+                      value={newTag}
+                      onChange={(e) => setNewTag(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      className="flex-1"
+                    />
+                    <Button onClick={addTag} size="sm">
+                      Add
+                    </Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="flex items-center gap-1"
+                      >
+                        {tag}
+                        <X
+                          className="w-3 h-3 cursor-pointer hover:text-red-500"
+                          onClick={() => removeTag(tag)}
+                        />
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
+
+          {/* Content */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Thoughts</CardTitle>
+              <CardDescription>
+                Write freely about your day and we'll help you reflect on it.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="p-0">
+              {/* Editor Toolbar */}
+              <div className="flex items-center gap-1 p-3 border-b bg-gray-50">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => editor?.chain().focus().undo().run()}
+                  disabled={!editor?.can().undo()}
+                >
+                  <Undo className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => editor?.chain().focus().redo().run()}
+                  disabled={!editor?.can().redo()}
+                >
+                  <Redo className="w-4 h-4" />
+                </Button>
+
+                <div className="w-px h-6 bg-gray-300 mx-2" />
+
+                {formatCommands.map((command) => (
+                  <Button
+                    key={command.label}
+                    variant={command.isActive() ? "default" : "ghost"}
+                    size="sm"
+                    onClick={command.action}
+                    title={command.label}
+                  >
+                    {command.icon}
+                  </Button>
+                ))}
+
+                {editor && (
+                  <div className="ml-auto text-xs text-gray-500">
+                    {editor.storage.characterCount.characters()} characters
+                  </div>
+                )}
+              </div>
+
+              {/* Editor Content */}
+              <div className="min-h-[400px]">
+                <EditorContent editor={editor} />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Save Button */}
+          <Card className="w-full">
+            <CardContent className="pt-6">
+              <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
+                <Save className="w-4 h-4 mr-2" />
+                Save Entry
+              </Button>
+              <p className="text-xs text-gray-500 text-center mt-2">
+                Your entries are private and secure
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
