@@ -2,7 +2,7 @@
 
 import type React from "react";
 
-import { useState, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -38,7 +38,53 @@ export default function NewEntryPage() {
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
   const [editorContent, setEditorContent] = useState("");
+  const [journalEntries, setJournalEntries] = useState<any[]>();
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await fetch(`/api/journal-entries`);
+      const data = await result.json();
+      const temp: any[] = [];
 
+      data.forEach((entry: any) => {
+        temp.push({
+          _id: entry._id,
+          entries: entry.entries,
+          createdAt: entry.createdAt,
+          updatedAt: entry.updatedAt,
+        });
+      });
+      setJournalEntries(temp);
+    };
+    fetchData();
+  }, []);
+  const saveEntry = async () => {
+    try {
+      const entry = {
+        title: title,
+        content: editorContent,
+        tags: tags,
+        createdAt: new Date().toISOString(),
+      };
+
+      const response = await fetch(`/api/journal-entries`, {
+        method: "POST",
+        body: JSON.stringify({ entry }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save entry");
+      }
+
+      const result = await response.json();
+      // You might want to handle successful save here
+      // For example, redirect to journal list or show success message
+    } catch (err) {
+      console.error("Error submitting entry:", err);
+    }
+  };
   // Rich text editor setup
   const editor = useEditor({
     extensions: [
@@ -320,7 +366,10 @@ export default function NewEntryPage() {
           {/* Save Button */}
           <Card className="w-full">
             <CardContent className="pt-6">
-              <Button className="w-full bg-[#3aa0f7] hover:bg-[#3aa0f7]/80">
+              <Button
+                className="w-full bg-[#3aa0f7] hover:bg-[#3aa0f7]/80"
+                onClick={saveEntry}
+              >
                 <Save className="w-4 h-4 mr-2" />
                 Save Entry
               </Button>
