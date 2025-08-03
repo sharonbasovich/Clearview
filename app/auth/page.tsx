@@ -20,14 +20,134 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const [termsMd, setTermsMd] = useState<string>("");
 
-  useEffect(() => {
-    fetch("/terms_and_conditions.md")
-      .then((res) => res.text())
-      .then(setTermsMd)
-      .catch(() => {});
-  }, []);
+  const termsContent = `# Privacy Policy & Terms of Service
+
+**Last Updated:** August 2nd, 2025
+
+## 1. Introduction
+
+Welcome to Clearview ("we," "our," or "us"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our journaling application and related services (the "Service").
+
+By using our Service, you agree to the collection and use of information in accordance with this policy and our terms of service.
+
+## 2. Information We Collect
+
+### Personal Information
+- **Account Information**: When you create an account, we collect your Discord username and user ID
+- **Journal Entries**: Your personal journal entries, thoughts, and reflections that you choose to record
+- **Usage Data**: Information about how you use our Service, including features accessed and time spent
+
+### Automatically Collected Information
+- **Device Information**: Device type, operating system, browser type
+- **Log Data**: IP address, access times, pages viewed
+- **Cookies**: We use cookies to enhance your experience and maintain your session
+
+## 3. How We Use Your Information
+
+We use your information to:
+- Provide, maintain, and improve our Service
+- Personalize your journaling experience
+- Generate AI insights and suggestions for your entries
+- Communicate with you about updates and features
+- Ensure the security and integrity of our Service
+- Comply with legal obligations
+
+## 4. Data Storage and Security
+
+### Security Measures
+- All data is encrypted in transit and at rest
+- We use industry-standard security protocols
+- Regular security audits and updates
+- Access controls limit who can view your data
+
+### Data Retention
+- Journal entries are stored securely and retained as long as you maintain your account
+- You can delete individual entries or your entire account at any time
+- Deleted data is permanently removed from our systems within 30 days
+
+## 5. AI and Data Processing
+
+### AI Insights
+- We use AI to analyze your journal entries and provide personalized insights
+- This processing happens on secure servers and is used solely to enhance your experience
+- Your data is never used to train AI models or shared with third parties
+
+### Data Processing
+- All processing is done to provide you with better journaling features
+- We do not sell, rent, or share your personal data with advertisers
+- Anonymous, aggregated data may be used for service improvements
+
+## 6. Your Rights and Choices
+
+You have the right to:
+- **Access**: Request a copy of your personal data
+- **Correction**: Update or correct inaccurate information
+- **Deletion**: Delete your account and all associated data
+- **Portability**: Export your journal entries in a standard format
+- **Restriction**: Limit how we process your data
+
+## 7. Third-Party Services
+
+### Discord Authentication
+- We use Discord for secure authentication
+- We only collect your Discord username and user ID
+- Discord's privacy policy applies to their services
+
+### Service Providers
+- We may use trusted third-party services for hosting, analytics, and security
+- These providers are bound by strict data protection agreements
+- They cannot access or use your data beyond what's necessary for their services
+
+## 8. Children's Privacy
+
+Our Service is not intended for children under 13. We do not knowingly collect personal information from children under 13. If you are a parent and believe your child has provided us with personal information, please contact us.
+
+## 9. International Data Transfers
+
+Your information may be transferred to and processed in countries other than your own. We ensure appropriate safeguards are in place to protect your data during such transfers.
+
+## 10. Changes to This Policy
+
+We may update this Privacy Policy periodically. We will notify you of any material changes by posting the new policy on this page and updating the "Last Updated" date.
+
+## 11. Terms of Service
+
+### Acceptance of Terms
+By accessing and using Clearview, you accept and agree to be bound by these Terms of Service.
+
+### Use of Service
+- You must be at least 13 years old to use this Service
+- You are responsible for maintaining the confidentiality of your account
+- You agree not to use the Service for any unlawful purposes
+- You retain ownership of your journal entries and personal data
+
+### Service Availability
+- We strive to maintain high availability but cannot guarantee uninterrupted service
+- We reserve the right to modify or discontinue features with reasonable notice
+- Scheduled maintenance will be announced in advance when possible
+
+### Limitation of Liability
+- The Service is provided "as is" without warranties of any kind
+- We are not liable for any indirect, incidental, or consequential damages
+- Our liability is limited to the amount paid for the Service in the past 12 months
+
+### Termination
+- You may terminate your account at any time
+- We may terminate accounts that violate these terms
+- Upon termination, your data will be deleted according to our retention policy
+
+## 12. Contact Information
+
+If you have any questions about this Privacy Policy or Terms of Service, please contact us at:
+
+**Email**: privacy@clearview-journal.com
+**Website**: https://clearview-journal.com/contact
+
+---
+
+*This document serves as both our Privacy Policy and Terms of Service. By using Clearview, you acknowledge that you have read, understood, and agree to be bound by these terms.*`;
+
   const router = useRouter();
 
   const handleDiscordAuth = async () => {
@@ -156,7 +276,7 @@ export default function AuthPage() {
               </Typography>
               <Button
                 variant="outlined"
-                href="/terms_and_conditions.pdf"
+                href="https://hc-cdn.hel1.your-objectstorage.com/s/v3/b03df1fc032786d3875950dea67548c263c51046_terms_and_conditions.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -175,7 +295,7 @@ export default function AuthPage() {
                 mb: 2,
               }}
             >
-              <ReactMarkdown>{termsMd || "Loading terms..."}</ReactMarkdown>
+              <ReactMarkdown>{termsContent}</ReactMarkdown>
             </Box>
             <Stack mb={2} direction="row" spacing={1} alignItems="center">
               <input

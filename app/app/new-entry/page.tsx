@@ -5,7 +5,13 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";
 import { Navigation } from "@/components/ui/navigation";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BookOpen, Mic, ArrowLeft } from "lucide-react";
 import Link from "next/link";
@@ -100,12 +106,12 @@ export default function NewEntryPage() {
                     Write Journal Entry
                   </CardTitle>
                   <CardDescription className="text-sm md:text-lg text-gray-600">
-                    Express your thoughts through writing with rich text formatting
+                    Express your thoughts through writing with rich text
+                    formatting
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center pt-0">
-                  <div className="space-y-3 text-sm text-gray-500">
-                  </div>
+                  <div className="space-y-3 text-sm text-gray-500"></div>
                 </CardContent>
               </Link>
             </Card>
@@ -125,8 +131,7 @@ export default function NewEntryPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="text-center pt-0">
-                  <div className="space-y-3 text-sm text-gray-500">
-                  </div>
+                  <div className="space-y-3 text-sm text-gray-500"></div>
                 </CardContent>
               </Link>
             </Card>
@@ -135,7 +140,8 @@ export default function NewEntryPage() {
           {/* Additional Info */}
           <div className="mt-12 text-center">
             <p className="text-gray-500 text-sm">
-              Both options will help you capture and reflect on your thoughts in different ways.
+              Both options will help you capture and reflect on your thoughts in
+              different ways.
               <br />
               Choose the method that feels most natural to you today.
             </p>
@@ -144,4 +150,4 @@ export default function NewEntryPage() {
       </div>
     </main>
   );
-} 
+}
