@@ -105,10 +105,6 @@ export default function NewEntryPage() {
                 </CardHeader>
                 <CardContent className="text-center pt-0">
                   <div className="space-y-3 text-sm text-gray-500">
-                    <p>• Rich text editor with formatting options</p>
-                    <p>• Add tags and organize your thoughts</p>
-                    <p>• Voice-to-text transcription available</p>
-                    <p>• Save and revisit your entries anytime</p>
                   </div>
                 </CardContent>
               </Link>
@@ -130,10 +126,6 @@ export default function NewEntryPage() {
                 </CardHeader>
                 <CardContent className="text-center pt-0">
                   <div className="space-y-3 text-sm text-gray-500">
-                    <p>• Real-time voice conversation</p>
-                    <p>• AI responds with voice and text</p>
-                    <p>• Perfect for quick thoughts and ideas</p>
-                    <p>• Natural, conversational experience</p>
                   </div>
                 </CardContent>
               </Link>
