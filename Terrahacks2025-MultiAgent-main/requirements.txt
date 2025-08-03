@@ -1,0 +1,28 @@
+# Core ADK and Agent Dependencies
+google-adk>=1.4.0
+uvicorn>=0.27.0
+fastapi>=0.110.0
+
+# MongoDB Dependencies
+pymongo>=4.6.0
+motor>=3.3.0
+
+# LlamaIndex Core and MongoDB Integration
+llama-index-core>=0.13.0
+llama-index-vector-stores-mongodb>=0.3.0
+llama-index-embeddings-google>=0.4.0
+llama-index-readers-mongodb>=0.2.0
+
+# Google AI and Embeddings
+google-generativeai>=0.5.2,<0.6
+google-ai-generativelanguage>=0.6.4,<0.7.0
+google-genai>=1.21.0
+
+# Data Processing and Utilities
+python-dotenv>=1.0.0
+pydantic>=2.6.0
+typing-extensions>=4.9.0
+
+# Optional: Development and Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
