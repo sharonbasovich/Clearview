@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Calendar, Smile, Meh, Frown } from "lucide-react"
-import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Smile, Meh, Frown } from "lucide-react";
+import Link from "next/link";
 
 const recentEntries = [
   {
@@ -28,28 +28,30 @@ const recentEntries = [
     preview: "Spent the evening with family playing board games...",
     tags: ["family", "joy"],
   },
-]
+];
 
 const getMoodIcon = (mood: string) => {
   switch (mood) {
     case "happy":
-      return <Smile className="w-4 h-4 text-green-500" />
+      return <Smile className="w-4 h-4 text-[#e4ce48]" />;
     case "content":
-      return <Smile className="w-4 h-4 text-blue-500" />
+      return <Smile className="w-4 h-4 text-[#3aa0f7]" />;
     case "stressed":
-      return <Frown className="w-4 h-4 text-red-500" />
+      return <Frown className="w-4 h-4 text-[#fb7442]" />;
     default:
-      return <Meh className="w-4 h-4 text-gray-500" />
+      return <Meh className="w-4 h-4 text-gray-500" />;
   }
-}
+};
 
 export function RecentEntries() {
   if (recentEntries.length === 0) {
     return (
       <div className="text-center py-8">
-        <p className="text-gray-500">No entries yet. Start writing to see them here!</p>
+        <p className="text-gray-500">
+          No entries yet. Start writing to see them here!
+        </p>
       </div>
-    )
+    );
   }
 
   return (
@@ -66,7 +68,9 @@ export function RecentEntries() {
                   {getMoodIcon(entry.mood)}
                 </div>
               </div>
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">{entry.preview}</p>
+              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                {entry.preview}
+              </p>
               <div className="flex flex-wrap gap-2">
                 {entry.tags.map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
@@ -79,5 +83,5 @@ export function RecentEntries() {
         </Link>
       ))}
     </div>
-  )
+  );
 }

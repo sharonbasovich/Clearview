@@ -140,10 +140,10 @@ export function JournalCalendar() {
                     ? entry
                       ? isToday
                         ? "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#fb7442] font-semibold"
-                        : "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-indigo-300 font-semibold"
+                        : "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#5b5bfb]/40 font-semibold"
                       : isToday
-                      ? "bg-indigo-100 text-indigo-700 border-2 border-[#fb7442]"
-                      : "bg-indigo-100 text-indigo-700 border-2 border-indigo-300"
+                      ? "bg-[#5b5bfb]/20 text-[#5b5bfb] border-2 border-[#fb7442]"
+                      : "bg-[#5b5bfb]/20 text-[#5b5bfb] border-2 border-[#5b5bfb]/40"
                     : entry
                     ? isToday
                       ? "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border-2 border-[#fb7442] font-semibold"
