@@ -1,4 +1,4 @@
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 import { NextResponse } from "next/server";
 
 const uri = process.env.MONGODB_URI!;
@@ -36,25 +36,6 @@ export async function POST(request: Request) {
     });
     
     await client.close(); // Don't forget to close the connection
-    return NextResponse.json(result);
-  } catch (error) {
-    console.error("Error posting journal entry:", error);
-    return NextResponse.json(
-      { error: "Failed to post entry" },
-      { status: 500 }
-    );
-  }
-}
-
-export async function PATCH(request: Request) {
-  try {
-    const client = new MongoClient(uri);
-    await client.connect();
-    const db = client.db("journal_app");
-    const { id, newEntry } = await request.json();
-    const result = await db
-      .collection("journal_entries")
-      .updateOne({ _id: new ObjectId(id) }, { $set: { entries: newEntry } });
     return NextResponse.json(result);
   } catch (error) {
     console.error("Error posting journal entry:", error);
