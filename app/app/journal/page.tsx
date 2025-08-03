@@ -307,7 +307,7 @@ export default function JournalPage() {
                   : "Try adjusting your search or filter criteria."}
               </p>
               {realEntries?.length === 0 ? (
-                <Link href="/journal/new">
+                <Link href="/app/journal/new">
                   <Button>
                     <Plus className="w-4 h-4 mr-2" />
                     Write First Entry
