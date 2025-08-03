@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Plus, BookOpen, TrendingUp, Heart } from "lucide-react";
+import { Plus, BookOpen, TrendingUp, Heart, BarChart3 } from "lucide-react";
 import Link from "next/link";
 import { RecentEntries } from "@/components/ui/recent-entries";
 import { WellbeingStats } from "@/components/ui/wellbeing-stats";
@@ -75,14 +75,26 @@ export default function HomePage({ user }: DashboardProps) {
               </Card>
             </Link>
 
-            <Link href="/app/insights" className="h-full col-span-2">
+            <Link href="/app/insights" className="h-full">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-amber-200 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center mb-2">
                     <Heart className="w-6 h-6 text-amber-600" />
                   </div>
                   <CardTitle className="text-lg">Insights</CardTitle>
-                  <CardDescription>Suggestions and Stats</CardDescription>
+                  <CardDescription>Get suggestions</CardDescription>
+                </CardHeader>
+              </Card>
+            </Link>
+
+            <Link href="/app/analytics" className="h-full">
+              <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-purple-200 h-full flex flex-col justify-center">
+                <CardHeader className="text-center">
+                  <div className="mx-auto w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-2">
+                    <BarChart3 className="w-6 h-6 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-lg">Analytics</CardTitle>
+                  <CardDescription>View your stats</CardDescription>
                 </CardHeader>
               </Card>
             </Link>

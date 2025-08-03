@@ -5,13 +5,21 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { BookOpen, TrendingUp, Plus, Menu, Home } from "lucide-react";
+import {
+  BookOpen,
+  TrendingUp,
+  Plus,
+  Menu,
+  Home,
+  BarChart3,
+} from "lucide-react";
 import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/app", icon: Home },
   { name: "Journal", href: "/app/journal", icon: BookOpen },
   { name: "Insights", href: "/app/insights", icon: TrendingUp },
+  { name: "Analytics", href: "/app/analytics", icon: BarChart3 },
 ];
 
 export function Navigation() {

@@ -1,6 +1,20 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { BookOpen, Target, Calendar, TrendingUp, Clock, Hash } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  BookOpen,
+  Target,
+  Calendar,
+  TrendingUp,
+  Clock,
+  Hash,
+} from "lucide-react";
+import { Navigation } from "@/components/ui/navigation";
 
 const analytics = [
   {
@@ -31,7 +45,7 @@ const analytics = [
     icon: Hash,
     color: "text-green-500",
   },
-]
+];
 
 const topTags = [
   { name: "gratitude", count: 15 },
@@ -40,7 +54,7 @@ const topTags = [
   { name: "nature", count: 8 },
   { name: "growth", count: 7 },
   { name: "challenges", count: 6 },
-]
+];
 
 const weeklyStats = [
   { day: "Monday", entries: 3, words: 850 },
@@ -50,16 +64,21 @@ const weeklyStats = [
   { day: "Friday", entries: 3, words: 852 },
   { day: "Saturday", entries: 2, words: 568 },
   { day: "Sunday", entries: 3, words: 912 },
-]
+];
 
 export default function AnalyticsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-8 py-8">
+      <Navigation />
+      <div className="container mx-auto px-8 py-8 pt-24">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Analytics & Statistics</h1>
-          <p className="text-gray-600">Data insights from your journaling journey</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Analytics & Statistics
+          </h1>
+          <p className="text-gray-600">
+            Data insights from your journaling journey
+          </p>
         </div>
 
         {/* Key Metrics */}
@@ -73,9 +92,15 @@ export default function AnalyticsPage() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold text-gray-900 mb-1">{analytic.value}</div>
-                <div className="text-sm font-medium text-gray-900 mb-1">{analytic.title}</div>
-                <div className="text-xs text-gray-500">{analytic.description}</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">
+                  {analytic.value}
+                </div>
+                <div className="text-sm font-medium text-gray-900 mb-1">
+                  {analytic.title}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {analytic.description}
+                </div>
               </CardContent>
             </Card>
           ))}
@@ -89,14 +114,21 @@ export default function AnalyticsPage() {
                 <Calendar className="w-5 h-5" />
                 Weekly Activity
               </CardTitle>
-              <CardDescription>Your journaling patterns throughout the week</CardDescription>
+              <CardDescription>
+                Your journaling patterns throughout the week
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {weeklyStats.map((stat) => (
-                  <div key={stat.day} className="flex items-center justify-between">
+                  <div
+                    key={stat.day}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex items-center gap-3">
-                      <div className="w-20 text-sm text-gray-600">{stat.day}</div>
+                      <div className="w-20 text-sm text-gray-600">
+                        {stat.day}
+                      </div>
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full">
                           <div
@@ -104,10 +136,14 @@ export default function AnalyticsPage() {
                             style={{ width: `${(stat.entries / 5) * 100}%` }}
                           ></div>
                         </div>
-                        <span className="text-sm text-gray-500">{stat.entries} entries</span>
+                        <span className="text-sm text-gray-500">
+                          {stat.entries} entries
+                        </span>
                       </div>
                     </div>
-                    <span className="text-sm text-gray-400">{stat.words} words</span>
+                    <span className="text-sm text-gray-400">
+                      {stat.words} words
+                    </span>
                   </div>
                 ))}
               </div>
@@ -121,12 +157,17 @@ export default function AnalyticsPage() {
                 <Hash className="w-5 h-5" />
                 Most Used Tags
               </CardTitle>
-              <CardDescription>Topics you write about most frequently</CardDescription>
+              <CardDescription>
+                Topics you write about most frequently
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {topTags.map((tag, index) => (
-                  <div key={tag.name} className="flex items-center justify-between">
+                  <div
+                    key={tag.name}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex items-center gap-3">
                       <div className="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-sm font-medium text-indigo-600">
                         {index + 1}
@@ -135,7 +176,9 @@ export default function AnalyticsPage() {
                         {tag.name}
                       </Badge>
                     </div>
-                    <span className="text-sm text-gray-500">{tag.count} entries</span>
+                    <span className="text-sm text-gray-500">
+                      {tag.count} entries
+                    </span>
                   </div>
                 ))}
               </div>
@@ -156,7 +199,9 @@ export default function AnalyticsPage() {
             <CardContent>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Morning (6-12 PM)</span>
+                  <span className="text-sm text-gray-600">
+                    Morning (6-12 PM)
+                  </span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
                       <div className="w-3/4 h-2 bg-indigo-500 rounded-full"></div>
@@ -165,7 +210,9 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Afternoon (12-6 PM)</span>
+                  <span className="text-sm text-gray-600">
+                    Afternoon (12-6 PM)
+                  </span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
                       <div className="w-1/2 h-2 bg-indigo-500 rounded-full"></div>
@@ -174,7 +221,9 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-600">Evening (6-12 AM)</span>
+                  <span className="text-sm text-gray-600">
+                    Evening (6-12 AM)
+                  </span>
                   <div className="flex items-center gap-2">
                     <div className="w-24 h-2 bg-gray-200 rounded-full">
                       <div className="w-1/4 h-2 bg-indigo-500 rounded-full"></div>
@@ -193,13 +242,21 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-center">
-                <div className="text-3xl font-bold text-indigo-600 mb-2">Excellent</div>
-                <div className="text-sm text-gray-600 mb-4">Consistency Rating</div>
+                <div className="text-3xl font-bold text-indigo-600 mb-2">
+                  Excellent
+                </div>
+                <div className="text-sm text-gray-600 mb-4">
+                  Consistency Rating
+                </div>
                 <div className="w-full bg-gray-200 rounded-full h-3">
-                  <div className="bg-indigo-500 h-3 rounded-full" style={{ width: "85%" }}></div>
+                  <div
+                    className="bg-indigo-500 h-3 rounded-full"
+                    style={{ width: "85%" }}
+                  ></div>
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
-                  You've been consistently journaling! This regular practice supports your mental wellbeing.
+                  You've been consistently journaling! This regular practice
+                  supports your mental wellbeing.
                 </p>
               </div>
             </CardContent>
@@ -213,19 +270,27 @@ export default function AnalyticsPage() {
             <CardContent>
               <div className="space-y-3">
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Short (&lt; 150 words)</span>
+                  <span className="text-sm text-gray-600">
+                    Short (&lt; 150 words)
+                  </span>
                   <span className="text-sm font-medium">15%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Medium (150-400 words)</span>
+                  <span className="text-sm text-gray-600">
+                    Medium (150-400 words)
+                  </span>
                   <span className="text-sm font-medium">60%</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-sm text-gray-600">Long (&gt; 400 words)</span>
+                  <span className="text-sm text-gray-600">
+                    Long (&gt; 400 words)
+                  </span>
                   <span className="text-sm font-medium">25%</span>
                 </div>
                 <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-                  <p className="text-sm text-blue-700">Your average entry length has increased by 23% this month!</p>
+                  <p className="text-sm text-blue-700">
+                    Your average entry length has increased by 23% this month!
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -233,5 +298,5 @@ export default function AnalyticsPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
