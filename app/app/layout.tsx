@@ -5,9 +5,9 @@ import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Wellbeing Journal - Your Personal Wellness Companion",
+  title: "Clearview",
   description:
-    "Track your thoughts, emotions, and personal growth in a safe, private space designed for your mental wellness.",
+    "A journal app to encourage reflection and mindfulness while providing insights",
 };
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
