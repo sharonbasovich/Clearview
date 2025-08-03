@@ -12,12 +12,12 @@ if (!apiKey) {
 
 /**
  * POST /api/ai-suggestion
- * Expected JSON body: { content: string, systemPrompt?: string }
+ * Expected JSON body: { content: string, title?: string, systemPrompt?: string }
  * Returns: { suggestion: string }
  */
 export async function POST(req: NextRequest) {
   try {
-    const { content, systemPrompt } = await req.json();
+    const { content, title, systemPrompt } = await req.json();
 
     if (!content || typeof content !== "string") {
       return NextResponse.json(
@@ -32,21 +32,55 @@ export async function POST(req: NextRequest) {
 
     const ai = new GoogleGenAI({ apiKey });
 
+    // Enhanced system prompt for journal writing
+    const defaultSystemPrompt = `You are an empathetic AI writing assistant for a personal journaling app called Clearview. Your role is to help users continue their journal entries naturally and thoughtfully with questions and suggestions.
+
+GUIDELINES:
+- Provide 1-2 sentences that allow the user to naturally continue writing
+- Be aware of their tone and emotional state
+- Be supportive and encouraging, especially for vulnerable content
+- Focus on self-reflection, personal growth, and mindfulness
+- Ask questions that help the user explore their thoughts deeper
+- Keep suggestions between 15-40 words
+- Help users explore their thoughts deeper or move their narrative forward
+- Avoid being prescriptive or giving direct advice
+
+CONTEXT: This is a personal journal entry where the user has paused while writing.
+
+${title ? `Entry Title: "${title}"` : ''}
+
+Current Content: "${content}"
+
+Generate a natural, encouraging suggestion or question that helps the user explore their thoughts further:`;
+
     const prompt = systemPrompt
       ? `${systemPrompt}\n\nUser: ${content}`
-      : content;
+      : defaultSystemPrompt;
 
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
 
-    // Some SDK versions return the text in different fields; handle gracefully
-    const suggestion: string = (response as any).text || (response as any).response || "";
+    // Handle different response formats from the API
+    let suggestion: string = "";
+    
+    if (response && typeof response === 'object') {
+      suggestion = (response as any).text || 
+                  (response as any).response || 
+                  (response as any).candidates?.[0]?.content?.parts?.[0]?.text || 
+                  "";
+    }
 
-    return NextResponse.json({ suggestion });
+    // Clean up the suggestion (remove quotes if AI added them)
+    const cleanSuggestion = suggestion.replace(/^["']|["']$/g, '').trim();
+
+    return NextResponse.json({ suggestion: cleanSuggestion });
   } catch (err) {
     console.error("AI suggestion error", err);
-    return NextResponse.json({ suggestion: "" });
+    return NextResponse.json({ 
+      suggestion: "",
+      error: "Failed to generate suggestion" 
+    });
   }
 }
