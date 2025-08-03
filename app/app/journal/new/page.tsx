@@ -52,7 +52,9 @@ export default function NewEntryPage() {
   const [editorContent, setEditorContent] = useState("");
   const [journalEntries, setJournalEntries] = useState<any[]>();
   const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [recognition, setRecognition] = useState<any>(
+    null
+  );
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`/api/journal-entries`);
@@ -74,7 +76,9 @@ export default function NewEntryPage() {
 
   const toggleVoiceInput = () => {
     if (!recognition) {
-      alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+      alert(
+        "Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari."
+      );
       return;
     }
 
@@ -149,19 +153,20 @@ export default function NewEntryPage() {
   // Initialize speech recognition after editor is available
   useEffect(() => {
     if (!editor) return;
-    
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
+      const SpeechRecognition =
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognitionInstance = new SpeechRecognition();
-      
+
       recognitionInstance.continuous = true;
       recognitionInstance.interimResults = true;
-      recognitionInstance.lang = 'en-US';
-      
-      recognitionInstance.onresult = (event) => {
-        let finalTranscript = '';
-        let interimTranscript = '';
-        
+      recognitionInstance.lang = "en-US";
+
+      recognitionInstance.onresult = (event: any) => {
+        let finalTranscript = "";
+        let interimTranscript = "";
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
           const transcript = event.results[i][0].transcript;
           if (event.results[i].isFinal) {
@@ -170,28 +175,34 @@ export default function NewEntryPage() {
             interimTranscript += transcript;
           }
         }
-        
+
         if (finalTranscript && editor) {
           // Insert the final transcript into the editor
           const currentContent = editor.getHTML();
-          const newContent = currentContent.replace(/<p><\/p>$/, '') + (currentContent.endsWith('</p>') ? ` ${finalTranscript}` : `<p>${finalTranscript}</p>`);
+          const newContent =
+            currentContent.replace(/<p><\/p>$/, "") +
+            (currentContent.endsWith("</p>")
+              ? ` ${finalTranscript}`
+              : `<p>${finalTranscript}</p>`);
           editor.commands.setContent(newContent);
           setEditorContent(newContent);
         }
       };
-      
-      recognitionInstance.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-        if (event.error === 'not-allowed') {
-          alert('Microphone access was denied. Please allow microphone access and try again.');
+
+      recognitionInstance.onerror = (event: any) => {
+        console.error("Speech recognition error:", event.error);
+        if (event.error === "not-allowed") {
+          alert(
+            "Microphone access was denied. Please allow microphone access and try again."
+          );
         }
         setIsListening(false);
       };
-      
+
       recognitionInstance.onend = () => {
         setIsListening(false);
       };
-      
+
       setRecognition(recognitionInstance);
     }
   }, [editor]);
@@ -444,7 +455,11 @@ export default function NewEntryPage() {
                   title={isListening ? "Stop voice input" : "Start voice input"}
                   className={isListening ? "animate-pulse" : ""}
                 >
-                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
                   {isListening ? "Stop Transcribing" : "Start Transcribing"}
                 </Button>
 
