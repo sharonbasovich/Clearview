@@ -86,12 +86,21 @@ export default function JournalPage() {
       const temp: any[] = [];
 
       data.forEach((entry: any) => {
+        // Remove HTML tags and get clean text
+        const cleanContent = entry.content.replace(/<[^>]*>/g, "");
+
+        // Create preview with ellipsis only if content is longer than 100 chars
+        const preview =
+          cleanContent.length > 100
+            ? cleanContent.slice(0, 100) + "..."
+            : cleanContent;
+
         temp.push({
           _id: entry._id,
           title: entry.title,
           tags: entry.tags,
           date: entry.createdAt,
-          preview: entry.content.slice(0, 100) + "...",
+          preview: preview,
         });
       });
       setRealEntries(temp);
@@ -141,7 +150,11 @@ export default function JournalPage() {
       return matchesSearch && matchesTags;
     });
   }, [searchQuery, selectedTags, realEntries]);
-
+  const sortedEntries = useMemo(() => {
+    return filteredEntries?.sort((a, b) => {
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    });
+  }, [filteredEntries]);
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
@@ -159,7 +172,7 @@ export default function JournalPage() {
       <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-          <div style={{ paddingLeft: "1rem"}}>
+          <div style={{ paddingLeft: "1rem" }}>
             <h1 className="text-3xl font-bold text-gray-900">
               Journal Entries
             </h1>
@@ -167,7 +180,7 @@ export default function JournalPage() {
               Your personal reflections and thoughts
             </p>
           </div>
-          <Link href="/app/journal/new">
+          <Link href="/app/new-entry">
             <Button className="bg-[#3aa0f7] hover:bg-[#3aa0f7]/80">
               <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
               <span>New Entry</span>
@@ -268,7 +281,7 @@ export default function JournalPage() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           aria-label="Journal entries"
         >
-          {filteredEntries?.map((entry) => (
+          {sortedEntries?.map((entry) => (
             <Link key={entry._id} href={`/app/journal/${entry._id}`}>
               <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                 <CardHeader>

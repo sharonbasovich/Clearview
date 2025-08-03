@@ -137,7 +137,7 @@ export default function HomePage({ user }: DashboardProps) {
             className="grid grid-cols-2 gap-4 h-full"
             aria-label="Quick actions"
           >
-            <Link href="/app/journal/new" className="h-full">
+            <Link href="/app/new-entry" className="h-full">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-[#3aa0f7]/30 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-[#3aa0f7]/20 rounded-full flex items-center justify-center mb-2">
