@@ -1,0 +1,67 @@
+[33md24463a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m fixed routing
+[33mc9414ef[m rename second app folder
+[33mbdaa789[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Merge branch 'sharon'
+[33m0c0a578[m[33m ([m[1;31morigin/sharon[m[33m)[m modified sys prompt
+[33m9ea483b[m finished suggestion
+[33m101aad7[m improved ux
+[33mc89cf6e[m minor changes
+[33m0c6ac85[m new entry page that redirects users to either writing or voice
+[33mfbcc9f2[m setup gemini
+[33m1a5a446[m after making new journal, redirect back to original page
+[33m58009fe[m fixed type errors
+[33m7023b07[m added stt
+[33m23e1d15[m added tts
+[33m4002bf8[m fixed redirect
+[33meb1d099[m merged 2
+[33m7ac5047[m improved accessibility
+[33mf4e807a[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33m8970b15[m journal entry api complete
+[33me482457[m merged
+[33m72a13ff[m improved ux
+[33m02c7b8b[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33m98473f7[m api implementation
+[33m3147200[m added analytics tab
+[33m45c565d[m fixed routing
+[33m5a79361[m fixed routing
+[33m1c72297[m fixed new post page
+[33m5ffb326[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33m63c7c3f[m fixed middleware
+[33m86a175d[m basic implementation done
+[33m6c16469[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33mda20149[m mongodb api routes
+[33m302f6fa[m started fixing subpages
+[33m00e0aad[m finished dashboard styling
+[33m89c614e[m partially finished dashboard
+[33m1a32f58[m began on new dashboard
+[33mb75a319[m fixed gitignore
+[33mfa46ab4[m test2
+[33m21b2266[m test
+[33m1a520d3[m fixed gitignore
+[33mc8d36fa[m setup shadcn
+[33m3f48fcc[m added favicon
+[33m9e4106e[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33m6cca919[m landing page changes
+[33m0d03f38[m added DS_Store
+[33md8b1cbc[m added supabase
+[33me5e7ab4[m styled auth
+[33m4227a44[m finished home page
+[33m5038542[m front page
+[33m0478005[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33mc9eab0d[m rotating text
+[33m828ad5c[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33me027c02[m idk man
+[33m356e0bc[m added split text effect
+[33ma2798f1[m Merge branch 'main' of https://github.com/sharonbasovich/terrahacks
+[33m5220a31[m added ui ballpit
+[33m43c09c6[m voice thingy working
+[33m847b107[m pushed the changes ot the note editor
+[33m70eec54[m discord sign in implemented
+[33m6ad8037[m npm install next-auth
+[33md635336[m added the env varuable and discord auth
+[33m0e5d573[m discord completed
+[33m5dfcff3[m before added auth
+[33m0d421fc[m new style
+[33m6536a0d[m new style
+[33m11713d2[m make push from something started
+[33m6de40fd[m make push from something started
+[33med859f2[m added the frontend

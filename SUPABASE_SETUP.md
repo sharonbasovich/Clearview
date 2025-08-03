@@ -1,5 +1,7 @@
 # Supabase CLI Configuration
 
+test
+
 To set up Supabase CLI for your project:
 
 ## 1. Install Supabase CLI
