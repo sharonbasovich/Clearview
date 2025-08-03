@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
 import {
   Box,
   Container,
@@ -18,6 +19,15 @@ import PixelTrail from "@/components/ui/PixelTrail";
 export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [accepted, setAccepted] = useState(false);
+  const [termsMd, setTermsMd] = useState<string>("");
+
+  useEffect(() => {
+    fetch("/terms_and_conditions.md")
+      .then((res) => res.text())
+      .then(setTermsMd)
+      .catch(() => {});
+  }, []);
   const router = useRouter();
 
   const handleDiscordAuth = async () => {
@@ -152,7 +162,7 @@ export default function AuthPage() {
                 </Box>
               }
               onClick={handleDiscordAuth}
-              disabled={loading}
+              disabled={loading || !accepted}
               sx={{
                 py: 2,
                 backgroundColor: "#5865F2",
@@ -164,7 +174,7 @@ export default function AuthPage() {
                 color: "#FFFFFF",
               }}
             >
-              {loading ? "Connecting..." : "Continue with Discord"}
+              {!accepted ? "Accept terms to continue" : loading ? "Connecting..." : "Continue with Discord"}
             </Button>
 
             <Typography
@@ -178,8 +188,49 @@ export default function AuthPage() {
             </Typography>
           </Stack>
 
-          {/* Terms */}
-          {/* <Typography
+          {/* Terms & Conditions */}
+          <Box mt={4}>
+            <Typography variant="h6" gutterBottom>
+              Terms & Conditions
+            </Typography>
+            <Box
+              sx={{
+                maxHeight: 200,
+                overflowY: "auto",
+                backgroundColor: "#f9f9f9",
+                p: 2,
+                borderRadius: 1,
+                whiteSpace: "pre-wrap",
+                mb: 2,
+              }}
+            >
+              <ReactMarkdown>{termsMd || "Loading terms..."}</ReactMarkdown>
+            </Box>
+            <Stack direction="row" spacing={2} alignItems="center">
+              <Button
+                variant="outlined"
+                href="/terms_and_conditions.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Download PDF
+              </Button>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <input
+                  type="checkbox"
+                  id="accept_terms"
+                  checked={accepted}
+                  onChange={(e) => setAccepted(e.target.checked)}
+                />
+                <label htmlFor="accept_terms">
+                  I accept the Terms & Conditions
+                </label>
+              </Stack>
+            </Stack>
+          </Box>
+
+          {/* Original optional terms comment */}
+          {/*
             variant="body2"
             color="text.secondary"
             textAlign="center"
