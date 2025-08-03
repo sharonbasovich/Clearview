@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from 'react';
+import { Navigation } from '@/components/ui/navigation';
 import type { ChangeEvent, FormEvent, MutableRefObject } from 'react';
 
 // --- Type Definitions for a strictly typed component ---
@@ -294,7 +295,7 @@ const ADKStreamingTest: React.FC = () => {
       setTimeout(function () {
         console.log("Reconnecting...");
         if (eventSourceRef.current) {
-            eventSourceRef.current = new EventSource(sse_url);
+          eventSourceRef.current = new EventSource(sse_url);
         }
       }, 5000);
     };
@@ -335,57 +336,60 @@ const ADKStreamingTest: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-inter">
-      <div className="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">ADK Streaming Test</h1>
+    <main className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
+      <Navigation />
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4 font-inter">
+        <div className="w-full max-w-2xl bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Start a voice conversation</h1>
 
-        <div
-          ref={messagesDivRef}
-          className="h-96 overflow-y-auto border border-gray-300 rounded-lg p-4 bg-gray-50 mb-4 space-y-2">
-          {messages.length > 0 ? (
-            messages.map((msg, index) => (
-              <div key={typeof msg === 'string' ? `msg-${index}` : msg.id} className="bg-blue-100 text-blue-800 p-2 rounded-lg shadow-sm break-words">
-                {typeof msg === 'string' ? msg : msg.text}
+          <div
+            ref={messagesDivRef}
+            className="h-96 overflow-y-auto border border-gray-300 rounded-lg p-4 bg-gray-50 mb-4 space-y-2">
+            {messages.length > 0 ? (
+              messages.map((msg, index) => (
+                <div key={typeof msg === 'string' ? `msg-${index}` : msg.id} className="bg-blue-100 text-blue-800 p-2 rounded-lg shadow-sm break-words">
+                  {typeof msg === 'string' ? msg : msg.text}
+                </div>
+              ))
+            ) : (
+              <div className="text-gray-500 text-center italic">
+                Messages will appear here...
               </div>
-            ))
-          ) : (
-            <div className="text-gray-500 text-center italic">
-              Messages will appear here...
-            </div>
-          )}
-        </div>
-
-        <form onSubmit={handleMessageSubmit} className="flex flex-col md:flex-row gap-4">
-          <label htmlFor="message" className="sr-only">Message:</label>
-          <input
-            type="text"
-            id="message"
-            name="message"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder="Type your message..."
-            className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-          />
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              id="sendButton"
-              disabled={!isSendButtonEnabled || !inputValue.trim() || isAudioMode}
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-              Send
-            </button>
-            <button
-              type="button"
-              id="startAudioButton"
-              onClick={handleStartAudioClick}
-              disabled={isAudioMode}
-              className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
-              {isAudioMode ? "Audio Started" : "Start Audio"}
-            </button>
+            )}
           </div>
-        </form>
+
+          <form onSubmit={handleMessageSubmit} className="flex flex-col md:flex-row gap-4">
+            <label htmlFor="message" className="sr-only">Message:</label>
+            <input
+              type="text"
+              id="message"
+              name="message"
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="Type your message..."
+              className="flex-grow p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+            />
+            <div className="flex gap-4">
+              <button
+                type="submit"
+                id="sendButton"
+                disabled={!isSendButtonEnabled || !inputValue.trim() || isAudioMode}
+                className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                Send
+              </button>
+              <button
+                type="button"
+                id="startAudioButton"
+                onClick={handleStartAudioClick}
+                disabled={isAudioMode}
+                className="px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed">
+                {isAudioMode ? "Audio Started" : "Start Audio"}
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
