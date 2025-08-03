@@ -60,13 +60,13 @@ const mockEntries = [
 const getMoodIcon = (mood: string) => {
   switch (mood) {
     case "happy":
-      return <Smile className="w-4 h-4 text-green-500" />;
+      return <Smile className="w-4 h-4 text-[#e4ce48]" />;
     case "content":
-      return <Smile className="w-4 h-4 text-blue-500" />;
+      return <Smile className="w-4 h-4 text-[#3aa0f7]" />;
     case "thoughtful":
-      return <Meh className="w-4 h-4 text-yellow-500" />;
+      return <Meh className="w-4 h-4 text-[#fb7442]" />;
     case "stressed":
-      return <Frown className="w-4 h-4 text-red-500" />;
+      return <Frown className="w-4 h-4 text-[#8b59fb]" />;
     default:
       return <Meh className="w-4 h-4 text-gray-500" />;
   }
@@ -154,7 +154,7 @@ export default function JournalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
@@ -168,7 +168,7 @@ export default function JournalPage() {
             </p>
           </div>
           <Link href="/app/journal/new">
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
+            <Button className="bg-[#3aa0f7] hover:bg-[#3aa0f7]/80">
               <Plus className="w-4 h-4 mr-2" />
               New Entry
             </Button>

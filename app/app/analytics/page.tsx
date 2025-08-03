@@ -16,59 +16,281 @@ import {
 } from "lucide-react";
 import { Navigation } from "@/components/ui/navigation";
 
+// Mock entries data (this should come from your actual data source)
+const mockEntries = {
+  "2025-08-15": {
+    title: "A Beautiful Morning",
+    hasEntry: true,
+    tags: ["gratitude", "nature", "morning"],
+    wordCount: 245,
+  },
+  "2025-08-14": {
+    title: "Challenging Day at Work",
+    hasEntry: true,
+    tags: ["work", "growth", "challenges"],
+    wordCount: 320,
+  },
+  "2025-08-13": {
+    title: "Family Time",
+    hasEntry: true,
+    tags: ["family", "joy", "connection"],
+    wordCount: 180,
+  },
+  "2025-08-12": {
+    title: "Reflection on Goals",
+    hasEntry: true,
+    tags: ["goals", "planning", "self-reflection"],
+    wordCount: 410,
+  },
+  "2025-08-10": {
+    title: "Weekend Adventures",
+    hasEntry: true,
+    tags: ["adventure", "nature", "fun"],
+    wordCount: 290,
+  },
+  "2025-08-08": {
+    title: "Quiet Sunday",
+    hasEntry: true,
+    tags: ["gratitude", "peace", "reflection"],
+    wordCount: 156,
+  },
+  "2025-08-05": {
+    title: "Productive Day",
+    hasEntry: true,
+    tags: ["work", "productivity", "achievement"],
+    wordCount: 275,
+  },
+  "2025-08-03": {
+    title: "Creative Inspiration",
+    hasEntry: true,
+    tags: ["creativity", "inspiration", "growth"],
+    wordCount: 340,
+  },
+  "2025-08-01": {
+    title: "New Month Goals",
+    hasEntry: true,
+    tags: ["goals", "planning", "motivation"],
+    wordCount: 380,
+  },
+  "2025-08-20": {
+    title: "Summer Vibes",
+    hasEntry: true,
+    tags: ["summer", "joy", "nature"],
+    wordCount: 220,
+  },
+  "2025-08-22": {
+    title: "Project Milestone",
+    hasEntry: true,
+    tags: ["work", "achievement", "milestone"],
+    wordCount: 310,
+  },
+  "2025-08-25": {
+    title: "Weekend Getaway",
+    hasEntry: true,
+    tags: ["travel", "adventure", "family"],
+    wordCount: 420,
+  },
+  "2025-08-28": {
+    title: "Learning New Skills",
+    hasEntry: true,
+    tags: ["learning", "growth", "skills"],
+    wordCount: 295,
+  },
+};
+
+// Function to calculate longest streak
+const calculateLongestStreak = (entries: Record<string, any>) => {
+  const dates = Object.keys(entries)
+    .filter((dateStr) => entries[dateStr]?.hasEntry)
+    .sort();
+
+  if (dates.length === 0) return 0;
+
+  let longestStreak = 0;
+  let currentStreak = 1;
+
+  for (let i = 1; i < dates.length; i++) {
+    const prevDate = new Date(dates[i - 1]);
+    const currDate = new Date(dates[i]);
+
+    // Calculate days difference
+    const timeDiff = currDate.getTime() - prevDate.getTime();
+    const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+    if (daysDiff === 1) {
+      // Consecutive day
+      currentStreak++;
+    } else {
+      // Streak broken
+      longestStreak = Math.max(longestStreak, currentStreak);
+      currentStreak = 1;
+    }
+  }
+
+  // Check the last streak
+  longestStreak = Math.max(longestStreak, currentStreak);
+
+  return longestStreak;
+};
+
+// Function to calculate most active day
+const calculateMostActiveDay = (entries: Record<string, any>) => {
+  const dayCounts: Record<string, number> = {
+    Sunday: 0,
+    Monday: 0,
+    Tuesday: 0,
+    Wednesday: 0,
+    Thursday: 0,
+    Friday: 0,
+    Saturday: 0,
+  };
+
+  Object.keys(entries).forEach((dateStr) => {
+    if (entries[dateStr]?.hasEntry) {
+      const date = new Date(dateStr);
+      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+      dayCounts[dayName]++;
+    }
+  });
+
+  const mostActiveDay = Object.entries(dayCounts).reduce((a, b) =>
+    dayCounts[a[0]] > dayCounts[b[0]] ? a : b
+  );
+
+  return mostActiveDay[0];
+};
+
+// Function to calculate total entries this month
+const calculateTotalEntries = (entries: Record<string, any>) => {
+  const currentMonth = new Date().getMonth();
+  const currentYear = new Date().getFullYear();
+
+  return Object.keys(entries).filter((dateStr) => {
+    const date = new Date(dateStr);
+    return (
+      entries[dateStr]?.hasEntry &&
+      date.getMonth() === currentMonth &&
+      date.getFullYear() === currentYear
+    );
+  }).length;
+};
+
+// Function to calculate average words per entry
+const calculateAverageWords = (entries: Record<string, any>) => {
+  const entriesWithWordCount = Object.values(entries).filter(
+    (entry) => entry.hasEntry && entry.wordCount
+  );
+
+  if (entriesWithWordCount.length === 0) return 0;
+
+  const totalWords = entriesWithWordCount.reduce(
+    (sum, entry) => sum + (entry.wordCount || 0),
+    0
+  );
+
+  return Math.round(totalWords / entriesWithWordCount.length);
+};
+
+// Function to calculate top tags
+const calculateTopTags = (entries: Record<string, any>) => {
+  const tagCounts: Record<string, number> = {};
+
+  Object.values(entries).forEach((entry) => {
+    if (entry.hasEntry && entry.tags) {
+      entry.tags.forEach((tag: string) => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      });
+    }
+  });
+
+  return Object.entries(tagCounts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+};
+
+// Function to calculate weekly stats
+const calculateWeeklyStats = (entries: Record<string, any>) => {
+  const dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const weeklyStats = dayNames.map((day) => ({ day, entries: 0, words: 0 }));
+
+  Object.entries(entries).forEach(([dateStr, entry]) => {
+    if (entry.hasEntry) {
+      const date = new Date(dateStr);
+      const dayName = date.toLocaleDateString("en-US", { weekday: "long" });
+      const dayIndex = dayNames.indexOf(dayName);
+
+      if (dayIndex !== -1) {
+        weeklyStats[dayIndex].entries++;
+        weeklyStats[dayIndex].words += entry.wordCount || 0;
+      }
+    }
+  });
+
+  return weeklyStats;
+};
+
+// Calculate actual metrics
+const longestStreak = calculateLongestStreak(mockEntries);
+const mostActiveDay = calculateMostActiveDay(mockEntries);
+const totalEntries = calculateTotalEntries(mockEntries);
+const averageWords = calculateAverageWords(mockEntries);
+const topTags = calculateTopTags(mockEntries);
+const weeklyStats = calculateWeeklyStats(mockEntries);
+
+// Color palette for weekly activity bars
+const weeklyColors = [
+  "#e4ce48", // Sunday - Yellow
+  "#3aa0f7", // Monday - Blue
+  "#fb7442", // Tuesday - Orange
+  "#8b59fb", // Wednesday - Purple
+  "#5b5bfb", // Thursday - Indigo
+  "#6c21fb", // Friday - Dark Purple
+  "#b89af1", // Saturday - Light Purple
+];
+
 const analytics = [
   {
     title: "Most Active Day",
-    value: "Wednesday",
-    description: "You write the most entries on Wednesdays",
+    value: mostActiveDay,
+    description: `You write the most entries on ${mostActiveDay}s`,
     icon: Calendar,
-    color: "text-blue-500",
+    color: "text-[#3aa0f7]",
   },
   {
-    title: "Writing Streak",
-    value: "7 days",
-    description: "Current consecutive days of journaling",
+    title: "Longest Streak",
+    value: `${longestStreak} ${longestStreak === 1 ? "day" : "days"}`,
+    description: "Longest consecutive days of journaling",
     icon: Target,
-    color: "text-purple-500",
+    color: "text-[#8b59fb]",
   },
   {
     title: "Total Entries",
-    value: "42",
+    value: totalEntries.toString(),
     description: "Entries written this month",
     icon: BookOpen,
-    color: "text-indigo-500",
+    color: "text-[#5b5bfb]",
   },
   {
     title: "Average Words",
-    value: "284",
+    value: averageWords.toString(),
     description: "Words per entry this month",
     icon: Hash,
-    color: "text-green-500",
+    color: "text-[#e4ce48]",
   },
-];
-
-const topTags = [
-  { name: "gratitude", count: 15 },
-  { name: "work", count: 12 },
-  { name: "family", count: 10 },
-  { name: "nature", count: 8 },
-  { name: "growth", count: 7 },
-  { name: "challenges", count: 6 },
-];
-
-const weeklyStats = [
-  { day: "Monday", entries: 3, words: 850 },
-  { day: "Tuesday", entries: 2, words: 620 },
-  { day: "Wednesday", entries: 5, words: 1420 },
-  { day: "Thursday", entries: 4, words: 1136 },
-  { day: "Friday", entries: 3, words: 852 },
-  { day: "Saturday", entries: 2, words: 568 },
-  { day: "Sunday", entries: 3, words: 912 },
 ];
 
 export default function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-8 py-8 pt-24">
         {/* Header */}
@@ -120,7 +342,7 @@ export default function AnalyticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {weeklyStats.map((stat) => (
+                {weeklyStats.map((stat, index) => (
                   <div
                     key={stat.day}
                     className="flex items-center justify-between"
@@ -132,8 +354,11 @@ export default function AnalyticsPage() {
                       <div className="flex items-center gap-2">
                         <div className="w-32 h-2 bg-gray-200 rounded-full">
                           <div
-                            className="h-2 bg-indigo-500 rounded-full"
-                            style={{ width: `${(stat.entries / 5) * 100}%` }}
+                            className="h-2 rounded-full"
+                            style={{
+                              width: `${(stat.entries / 5) * 100}%`,
+                              backgroundColor: weeklyColors[index],
+                            }}
                           ></div>
                         </div>
                         <span className="text-sm text-gray-500">
