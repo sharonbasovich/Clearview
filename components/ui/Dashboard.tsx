@@ -74,7 +74,7 @@ export default function HomePage({ user }: DashboardProps) {
     <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <div className="container mx-auto px-8 py-8">
         {/* Header */}
-        <div className="text-center mb-12">
+        <header className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             How are you{" "}
             {user?.user_metadata?.global_name ||
@@ -85,22 +85,28 @@ export default function HomePage({ user }: DashboardProps) {
               ""}
             ?
           </h1>
-        </div>
+        </header>
 
         {/* Calendar Section - Moved to Top */}
-        <div className="mb-12">
+        <section className="mb-12" aria-labelledby="progress-title">
           <Card>
             <CardHeader className="relative">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Your Progress</CardTitle>
+                  <CardTitle id="progress-title">Your Progress</CardTitle>
                   <CardDescription>Keep it up!</CardDescription>
                 </div>
                 {/* Streak Counter */}
-                <div className="flex items-center gap-1 bg-gradient-to-r from-[#e4ce48]/20 to-[#e4ce48]/30 px-4 py-2 rounded-full border border-[#e4ce48]/40">
+                <div
+                  className="flex items-center gap-1 bg-gradient-to-r from-[#e4ce48]/20 to-[#e4ce48]/30 px-4 py-2 rounded-full border border-[#e4ce48]/40"
+                  role="status"
+                  aria-label={`Current streak: ${currentStreak} ${
+                    currentStreak === 1 ? "day" : "days"
+                  }`}
+                >
                   <Image
                     src="/fire.webp"
-                    alt="Streak"
+                    alt="Fire icon representing streak"
                     width={34}
                     height={34}
                     className="w-8 h-8"
@@ -122,17 +128,23 @@ export default function HomePage({ user }: DashboardProps) {
               <JournalCalendar />
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* Dashboard Content */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Quick Actions - 2x2 Grid */}
-          <div className="grid grid-cols-2 gap-4 h-full">
+          <nav
+            className="grid grid-cols-2 gap-4 h-full"
+            aria-label="Quick actions"
+          >
             <Link href="/app/journal/new" className="h-full">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-[#3aa0f7]/30 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-[#3aa0f7]/20 rounded-full flex items-center justify-center mb-2">
-                    <Plus className="w-6 h-6 text-[#3aa0f7]" />
+                    <Plus
+                      className="w-6 h-6 text-[#3aa0f7]"
+                      aria-hidden="true"
+                    />
                   </div>
                   <CardTitle className="text-lg">New Entry</CardTitle>
                   <CardDescription>Write about your day</CardDescription>
@@ -144,7 +156,10 @@ export default function HomePage({ user }: DashboardProps) {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-[#fb7442]/30 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-[#fb7442]/20 rounded-full flex items-center justify-center mb-2">
-                    <BookOpen className="w-6 h-6 text-[#fb7442]" />
+                    <BookOpen
+                      className="w-6 h-6 text-[#fb7442]"
+                      aria-hidden="true"
+                    />
                   </div>
                   <CardTitle className="text-lg">View Entries</CardTitle>
                   <CardDescription>Read past reflections</CardDescription>
@@ -156,7 +171,10 @@ export default function HomePage({ user }: DashboardProps) {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-[#8b59fb]/30 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-[#8b59fb]/20 rounded-full flex items-center justify-center mb-2">
-                    <Heart className="w-6 h-6 text-[#8b59fb]" />
+                    <Heart
+                      className="w-6 h-6 text-[#8b59fb]"
+                      aria-hidden="true"
+                    />
                   </div>
                   <CardTitle className="text-lg">Insights</CardTitle>
                   <CardDescription>Insights on your wellbeing</CardDescription>
@@ -168,21 +186,30 @@ export default function HomePage({ user }: DashboardProps) {
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-[#5b5bfb]/30 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-[#5b5bfb]/20 rounded-full flex items-center justify-center mb-2">
-                    <BarChart3 className="w-6 h-6 text-[#5b5bfb]" />
+                    <BarChart3
+                      className="w-6 h-6 text-[#5b5bfb]"
+                      aria-hidden="true"
+                    />
                   </div>
                   <CardTitle className="text-lg">Analytics</CardTitle>
                   <CardDescription>Your statistics</CardDescription>
                 </CardHeader>
               </Card>
             </Link>
-          </div>
+          </nav>
 
           {/* Recent Entries */}
-          <div className="lg:col-span-2">
+          <section
+            className="lg:col-span-2"
+            aria-labelledby="recent-entries-title"
+          >
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <BookOpen className="w-5 h-5" />
+                <CardTitle
+                  className="flex items-center gap-2"
+                  id="recent-entries-title"
+                >
+                  <BookOpen className="w-5 h-5" aria-hidden="true" />
                   Recent Entries
                 </CardTitle>
                 <CardDescription>
@@ -193,7 +220,7 @@ export default function HomePage({ user }: DashboardProps) {
                 <RecentEntries />
               </CardContent>
             </Card>
-          </div>
+          </section>
         </div>
       </div>
     </div>

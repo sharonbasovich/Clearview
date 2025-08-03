@@ -290,18 +290,18 @@ const analytics = [
 
 export default function AnalyticsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
+    <main className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-8 py-8 pt-24">
         {/* Header */}
-        <div className="mb-8">
+        <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Analytics & Statistics
           </h1>
           <p className="text-gray-600">
             Data insights from your journaling journey
           </p>
-        </div>
+        </header>
 
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -522,6 +522,6 @@ export default function AnalyticsPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

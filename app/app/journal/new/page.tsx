@@ -169,7 +169,7 @@ export default function NewEntryPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
+    <main className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-4 py-8 pt-24">
         <style jsx global>{`
@@ -380,6 +380,6 @@ export default function NewEntryPage() {
           </Card>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

@@ -154,11 +154,11 @@ export default function JournalPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
+    <main className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-4 py-8 pt-24">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
               Journal Entries
@@ -169,105 +169,121 @@ export default function JournalPage() {
           </div>
           <Link href="/app/journal/new">
             <Button className="bg-[#3aa0f7] hover:bg-[#3aa0f7]/80">
-              <Plus className="w-4 h-4 mr-2" />
-              New Entry
+              <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
+              <span>New Entry</span>
             </Button>
           </Link>
-        </div>
+        </header>
 
         {/* Search and Filter */}
-        <Card className="mb-8">
-          <CardContent className="pt-6">
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <Input
-                  placeholder="Search your entries..."
-                  className="pl-10"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-              <div className="relative" ref={filterRef}>
-                <Button
-                  variant="outline"
-                  className="sm:w-auto bg-transparent"
-                  onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                >
-                  <Filter className="w-4 h-4 mr-2" />
-                  Filter {selectedTags.length > 0 && `(${selectedTags.length})`}
-                </Button>
-
-                {/* Filter Dropdown */}
-                {showFilterDropdown && (
-                  <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h3 className="font-medium text-gray-900">
-                        Filter by Tags
-                      </h3>
-                      {selectedTags.length > 0 && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={clearFilters}
-                          className="text-xs text-gray-500 hover:text-gray-700"
-                        >
-                          Clear all
-                        </Button>
-                      )}
-                    </div>
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {allTags.map((tag) => (
-                        <label
-                          key={tag}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedTags.includes(tag)}
-                            onChange={() => toggleTag(tag)}
-                            className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                          <span className="text-sm text-gray-700">{tag}</span>
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Active Filters Display */}
-            {selectedTags.length > 0 && (
-              <div className="mt-4 flex flex-wrap gap-2">
-                <span className="text-sm text-gray-500">Active filters:</span>
-                {selectedTags.map((tag) => (
-                  <Badge
-                    key={tag}
-                    variant="secondary"
-                    className="text-xs cursor-pointer hover:bg-gray-200"
-                    onClick={() => toggleTag(tag)}
+        <section className="mb-8" aria-labelledby="search-filter-title">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4"
+                    aria-hidden="true"
+                  />
+                  <Input
+                    placeholder="Search your entries..."
+                    className="pl-10"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    aria-label="Search journal entries"
+                  />
+                </div>
+                <div className="relative" ref={filterRef}>
+                  <Button
+                    variant="outline"
+                    className="sm:w-auto bg-transparent"
+                    onClick={() => setShowFilterDropdown(!showFilterDropdown)}
                   >
-                    {tag} ×
-                  </Badge>
-                ))}
+                    <Filter className="w-4 h-4 mr-2" />
+                    Filter{" "}
+                    {selectedTags.length > 0 && `(${selectedTags.length})`}
+                  </Button>
+
+                  {/* Filter Dropdown */}
+                  {showFilterDropdown && (
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-white border border-gray-200 rounded-lg shadow-lg z-10 p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-medium text-gray-900">
+                          Filter by Tags
+                        </h3>
+                        {selectedTags.length > 0 && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={clearFilters}
+                            className="text-xs text-gray-500 hover:text-gray-700"
+                          >
+                            Clear all
+                          </Button>
+                        )}
+                      </div>
+                      <div className="space-y-2 max-h-48 overflow-y-auto">
+                        {allTags.map((tag) => (
+                          <label
+                            key={tag}
+                            className="flex items-center space-x-2 cursor-pointer"
+                          >
+                            <input
+                              type="checkbox"
+                              checked={selectedTags.includes(tag)}
+                              onChange={() => toggleTag(tag)}
+                              className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                            />
+                            <span className="text-sm text-gray-700">{tag}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
-          </CardContent>
-        </Card>
+
+              {/* Active Filters Display */}
+              {selectedTags.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="text-sm text-gray-500">Active filters:</span>
+                  {selectedTags.map((tag) => (
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="text-xs cursor-pointer hover:bg-gray-200"
+                      onClick={() => toggleTag(tag)}
+                    >
+                      {tag} ×
+                    </Badge>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Entries Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <section
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          aria-label="Journal entries"
+        >
           {filteredEntries?.map((entry) => (
             <Link key={entry._id} href={`/app/journal/${entry._id}`}>
               <Card className="hover:shadow-lg transition-shadow cursor-pointer h-full">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-gray-500" />
-                      <span className="text-sm text-gray-500">
+                      <Calendar
+                        className="w-4 h-4 text-gray-500"
+                        aria-hidden="true"
+                      />
+                      <time
+                        className="text-sm text-gray-500"
+                        dateTime={entry.date}
+                      >
                         {new Date(entry.date).toLocaleDateString()}
-                      </span>
+                      </time>
                     </div>
                   </div>
                   <CardTitle className="text-lg">{entry.title}</CardTitle>
@@ -276,9 +292,18 @@ export default function JournalPage() {
                   <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                     {entry.preview.replace(/<[^>]*>/g, "")}
                   </p>
-                  <div className="flex flex-wrap gap-2">
-                    {entry.tags?.map((tag: string) => ( // Add optional chaining here
-                      <Badge key={tag} variant="secondary" className="text-xs">
+                  <div
+                    className="flex flex-wrap gap-2"
+                    role="list"
+                    aria-label="Entry tags"
+                  >
+                    {entry.tags?.map((tag: string) => (
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="text-xs"
+                        role="listitem"
+                      >
                         {tag}
                       </Badge>
                     ))}
@@ -287,41 +312,46 @@ export default function JournalPage() {
               </Card>
             </Link>
           ))}
-        </div>
+        </section>
 
         {/* Empty State (if no entries) */}
         {filteredEntries?.length === 0 && (
-          <Card className="text-center py-12">
-            <CardContent>
-              <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                <BookOpen className="w-8 h-8 text-gray-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                {realEntries?.length === 0
-                  ? "No entries yet"
-                  : "No matching entries"}
-              </h3>
-              <p className="text-gray-600 mb-6">
-                {realEntries?.length === 0
-                  ? "Start your wellbeing journey by writing your first entry."
-                  : "Try adjusting your search or filter criteria."}
-              </p>
-              {realEntries?.length === 0 ? (
-                <Link href="/journal/new">
-                  <Button>
-                    <Plus className="w-4 h-4 mr-2" />
-                    Write First Entry
+          <section className="text-center py-12" aria-label="Empty state">
+            <Card>
+              <CardContent>
+                <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                  <BookOpen
+                    className="w-8 h-8 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {realEntries?.length === 0
+                    ? "No entries yet"
+                    : "No matching entries"}
+                </h3>
+                <p className="text-gray-600 mb-6">
+                  {realEntries?.length === 0
+                    ? "Start your wellbeing journey by writing your first entry."
+                    : "Try adjusting your search or filter criteria."}
+                </p>
+                {realEntries?.length === 0 ? (
+                  <Link href="/journal/new">
+                    <Button>
+                      <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
+                      <span>Write First Entry</span>
+                    </Button>
+                  </Link>
+                ) : (
+                  <Button onClick={clearFilters} variant="outline">
+                    <span>Clear Filters</span>
                   </Button>
-                </Link>
-              ) : (
-                <Button onClick={clearFilters} variant="outline">
-                  Clear Filters
-                </Button>
-              )}
-            </CardContent>
-          </Card>
+                )}
+              </CardContent>
+            </Card>
+          </section>
         )}
       </div>
-    </div>
+    </main>
   );
 }

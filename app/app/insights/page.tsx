@@ -123,26 +123,29 @@ const getPriorityColor = (priority: string) => {
 
 export default function InsightsPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
+    <main className="min-h-screen bg-gradient-to-br from-[#3aa0f7]/10 via-[#8b59fb]/10 to-[#5b5bfb]/10">
       <Navigation />
       <div className="container mx-auto px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <header className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             AI-Powered Insights
           </h1>
           <p className="text-gray-600">
             Personalized suggestions and observations from your journal entries
           </p>
-        </div>
+        </header>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <section
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"
+          aria-label="Insights summary"
+        >
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <Brain className="w-5 h-5 text-[#8b59fb]" />
-                Insights Generated
+                <Brain className="w-5 h-5 text-[#8b59fb]" aria-hidden="true" />
+                <span>Insights Generated</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -154,8 +157,11 @@ export default function InsightsPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <AlertTriangle className="w-5 h-5 text-[#fb7442]" />
-                Priority Areas
+                <AlertTriangle
+                  className="w-5 h-5 text-[#fb7442]"
+                  aria-hidden="true"
+                />
+                <span>Priority Areas</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -167,8 +173,11 @@ export default function InsightsPage() {
           <Card>
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center gap-2 text-lg">
-                <TrendingUp className="w-5 h-5 text-[#3aa0f7]" />
-                Positive Trends
+                <TrendingUp
+                  className="w-5 h-5 text-[#3aa0f7]"
+                  aria-hidden="true"
+                />
+                <span>Positive Trends</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -176,7 +185,7 @@ export default function InsightsPage() {
               <p className="text-sm text-gray-600">Areas of growth</p>
             </CardContent>
           </Card>
-        </div>
+        </section>
 
         {/* AI Insights */}
         <Card className="mb-8">
@@ -266,6 +275,6 @@ export default function InsightsPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </main>
   );
 }

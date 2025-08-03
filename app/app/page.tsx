@@ -45,19 +45,23 @@ export default function NotesApp() {
 
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          flexDirection: "column",
-          gap: 2,
-        }}
-      >
-        <CircularProgress />
-        <Typography>Loading your workspace...</Typography>
-      </Box>
+      <main role="main" aria-label="Loading workspace">
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <CircularProgress aria-label="Loading indicator" />
+          <Typography component="p" role="status" aria-live="polite">
+            Loading your workspace...
+          </Typography>
+        </Box>
+      </main>
     );
   }
 
@@ -66,9 +70,9 @@ export default function NotesApp() {
   }
 
   return (
-    <div>
+    <main role="main" aria-label="Dashboard">
       <Navigation />
       <Dashboard user={user} />
-    </div>
+    </main>
   );
 }
