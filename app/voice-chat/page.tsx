@@ -15,7 +15,7 @@ import {
   Alert,
 } from "@mui/material";
 import { Mic, MicOff, VolumeUp, SmartToy, Person } from "@mui/icons-material";
-import Navigation from "@/components/ui/navigation";
+import { Navigation } from "@/components/ui/navigation";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { User } from "@supabase/supabase-js";

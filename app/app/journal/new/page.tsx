@@ -32,8 +32,10 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/ui/navigation";
+import { useRouter } from "next/navigation";
 
 export default function NewEntryPage() {
+  const router = useRouter();
   const [title, setTitle] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState("");
@@ -79,10 +81,17 @@ export default function NewEntryPage() {
       }
 
       const result = await response.json();
-      // You might want to handle successful save here
-      // For example, redirect to journal list or show success message
+
+      // Redirect to the specific journal entry page
+      if (result.insertedId) {
+        router.push(`/app/journal/${result.insertedId}`);
+      } else {
+        // Fallback to journal list if no ID is returned
+        router.push("/app/journal");
+      }
     } catch (err) {
       console.error("Error submitting entry:", err);
+      // You might want to show an error message to the user here
     }
   };
   // Rich text editor setup
