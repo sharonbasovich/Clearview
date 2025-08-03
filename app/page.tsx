@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import {
   Box,
@@ -178,7 +179,8 @@ export default function HomePage() {
         }}
       >
         <Toolbar sx={{ py: 2 }}>
-          <Box sx={{ flexGrow: 1 }}>
+          <Stack direction="row" spacing={2} alignItems="center" sx={{ flexGrow: 1 }}>
+            <Image src="/icon.png" alt="Clearview Logo" width={40} height={40} />
             <SplitText
               text="Clearview"
               className="text-3xl font-bold split-text-blue"
@@ -190,11 +192,11 @@ export default function HomePage() {
               rootMargin="-50px"
               textAlign="left"
             />
-          </Box>
+          </Stack>
 
           {!isMobile && (
             <Stack direction="row" spacing={2} alignItems="center">
-              <Button
+              {/* <Button
                 variant="outlined"
                 size="large"
                 sx={{
@@ -220,7 +222,7 @@ export default function HomePage() {
                   rootMargin="-30px"
                   className="split-text-orange"
                 />
-              </Button>
+              </Button> */}
               <Button
                 variant="contained"
                 size="large"
@@ -305,7 +307,7 @@ export default function HomePage() {
             sx={{
               fontSize: { xs: "2.5rem", md: "4rem" },
               fontWeight: 700,
-              mb: 3,
+              mb: 0,
               color: "white",
               textAlign: "center",
               display: "flex",
@@ -348,7 +350,7 @@ export default function HomePage() {
               />
             </motion.div>
           </Box>
-          <Stack
+          {/* <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={2}
             justifyContent="center"
@@ -386,7 +388,7 @@ export default function HomePage() {
             >
               Sign Up
             </Button>
-          </Stack>
+          </Stack> */}
         </Box>
       </Box>
     </Box>
