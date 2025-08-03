@@ -59,6 +59,8 @@ export default function NewEntryPage() {
   const [suggestion, setSuggestion] = useState<string>("");
   const [suggestionStatus, setSuggestionStatus] = useState<"idle" | "waiting" | "fetching">("idle");
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+  const [suggestionPos, setSuggestionPos] = useState<{top:number;left:number}>({top:0,left:0});
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`/api/journal-entries`);
@@ -156,6 +158,16 @@ export default function NewEntryPage() {
 
       const plainText = editor.getText().trim();
       if (plainText.split(/\s+/).length >= 3) {
+        // capture caret coords for positioning suggestion later
+        const { from } = editor.state.selection;
+        const coords = editor.view.coordsAtPos(from);
+        const containerRect = editorContainerRef.current?.getBoundingClientRect();
+        if (containerRect) {
+          setSuggestionPos({
+            top: coords.bottom - containerRect.top,
+            left: 4,
+          });
+        }
         setSuggestionStatus("waiting");
         // Trigger suggestion after 2s pause
         typingTimeoutRef.current = setTimeout(async () => {
@@ -500,10 +512,6 @@ export default function NewEntryPage() {
 
                 {editor && (
                   <div className="ml-auto text-xs text-gray-500 flex items-center gap-4">
-                    <span>
-                      {suggestionStatus === "waiting" && "Pause to get suggestion"}
-                      {suggestionStatus === "fetching" && "Getting suggestion..."}
-                    </span>
                     <span>{editor.storage.characterCount.characters()} characters</span>
                   </div>
                 )}
@@ -511,11 +519,14 @@ export default function NewEntryPage() {
               </div> {/* end toolbar */}
 
               {/* Editor Content */}
-              <div className="min-h-[400px] relative">
+              <div className="min-h-[400px] relative" ref={editorContainerRef}>
                 <EditorContent editor={editor} />
-                {suggestion && (
-                  <div className="absolute left-4 right-4 bottom-2 text-gray-400 italic pointer-events-none">
-                    {suggestion}
+                {(suggestion || suggestionStatus !== "idle") && (
+                  <div
+                    className="absolute text-gray-400 italic pointer-events-none"
+                    style={{ top: suggestionPos.top + 6, left: suggestionPos.left + 12 }}
+                  >
+                    {suggestion || (suggestionStatus === "waiting" ? "Pause to get suggestion" : "Getting suggestion...")}
                   </div>
                 )}
               </div>
