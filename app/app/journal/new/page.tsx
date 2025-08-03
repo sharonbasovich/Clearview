@@ -2,6 +2,14 @@
 
 import type React from "react";
 
+// Extend Window interface for Speech Recognition API
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
+
 import { useState, useEffect } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -29,6 +37,8 @@ import {
   Code,
   Undo,
   Redo,
+  Mic,
+  MicOff,
 } from "lucide-react";
 import Link from "next/link";
 import { Navigation } from "@/components/ui/navigation";
@@ -41,6 +51,8 @@ export default function NewEntryPage() {
   const [newTag, setNewTag] = useState("");
   const [editorContent, setEditorContent] = useState("");
   const [journalEntries, setJournalEntries] = useState<any[]>();
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`/api/journal-entries`);
@@ -59,6 +71,21 @@ export default function NewEntryPage() {
     };
     fetchData();
   }, []);
+
+  const toggleVoiceInput = () => {
+    if (!recognition) {
+      alert('Speech recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+
+    if (isListening) {
+      recognition.stop();
+      setIsListening(false);
+    } else {
+      recognition.start();
+      setIsListening(true);
+    }
+  };
   const saveEntry = async () => {
     try {
       const entry = {
@@ -118,6 +145,56 @@ export default function NewEntryPage() {
       },
     },
   });
+
+  // Initialize speech recognition after editor is available
+  useEffect(() => {
+    if (!editor) return;
+    
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognitionInstance = new SpeechRecognition();
+      
+      recognitionInstance.continuous = true;
+      recognitionInstance.interimResults = true;
+      recognitionInstance.lang = 'en-US';
+      
+      recognitionInstance.onresult = (event) => {
+        let finalTranscript = '';
+        let interimTranscript = '';
+        
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcript;
+          } else {
+            interimTranscript += transcript;
+          }
+        }
+        
+        if (finalTranscript && editor) {
+          // Insert the final transcript into the editor
+          const currentContent = editor.getHTML();
+          const newContent = currentContent.replace(/<p><\/p>$/, '') + (currentContent.endsWith('</p>') ? ` ${finalTranscript}` : `<p>${finalTranscript}</p>`);
+          editor.commands.setContent(newContent);
+          setEditorContent(newContent);
+        }
+      };
+      
+      recognitionInstance.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        if (event.error === 'not-allowed') {
+          alert('Microphone access was denied. Please allow microphone access and try again.');
+        }
+        setIsListening(false);
+      };
+      
+      recognitionInstance.onend = () => {
+        setIsListening(false);
+      };
+      
+      setRecognition(recognitionInstance);
+    }
+  }, [editor]);
 
   const addTag = () => {
     if (newTag.trim() && !tags.includes(newTag.trim())) {
@@ -357,6 +434,19 @@ export default function NewEntryPage() {
                     {command.icon}
                   </Button>
                 ))}
+
+                <div className="w-px h-6 bg-gray-300 mx-2" />
+
+                <Button
+                  variant={isListening ? "destructive" : "outline"}
+                  size="sm"
+                  onClick={toggleVoiceInput}
+                  title={isListening ? "Stop voice input" : "Start voice input"}
+                  className={isListening ? "animate-pulse" : ""}
+                >
+                  {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                  {isListening ? "Stop Transcribing" : "Start Transcribing"}
+                </Button>
 
                 {editor && (
                   <div className="ml-auto text-xs text-gray-500">
