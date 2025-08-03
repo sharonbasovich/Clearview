@@ -51,7 +51,7 @@ export default function HomePage({ user }: DashboardProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Quick Actions - 2x2 Grid */}
           <div className="grid grid-cols-2 gap-4 h-full">
-            <Link href="/journal/new" className="h-full">
+            <Link href="/app/journal/new" className="h-full">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-indigo-200 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mb-2">
@@ -63,7 +63,7 @@ export default function HomePage({ user }: DashboardProps) {
               </Card>
             </Link>
 
-            <Link href="/journal" className="h-full">
+            <Link href="/app/journal" className="h-full">
               <Card className="hover:shadow-lg transition-shadow cursor-pointer border-2 hover:border-green-200 h-full flex flex-col justify-center">
                 <CardHeader className="text-center">
                   <div className="mx-auto w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-2">
