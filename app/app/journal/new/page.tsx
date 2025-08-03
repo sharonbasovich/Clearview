@@ -113,13 +113,8 @@ export default function NewEntryPage() {
 
       const result = await response.json();
 
-      // Redirect to the specific journal entry page
-      if (result.insertedId) {
-        router.push(`/app/journal/${result.insertedId}`);
-      } else {
-        // Fallback to journal list if no ID is returned
-        router.push("/app/journal");
-      }
+      // Redirect to the journal list page
+      router.push("/app/journal");
     } catch (err) {
       console.error("Error submitting entry:", err);
       // You might want to show an error message to the user here
