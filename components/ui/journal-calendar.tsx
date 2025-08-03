@@ -1,28 +1,32 @@
 "use client";
-
-import { useState } from "react";
+import Link from "next/link";
+import { Card } from "./card";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-
-const mockEntries = {
-  "2025-08-15": { title: "A Beautiful Morning", hasEntry: true },
-  "2025-08-14": { title: "Challenging Day at Work", hasEntry: true },
-  "2025-08-13": { title: "Family Time", hasEntry: true },
-  "2025-08-12": { title: "Reflection on Goals", hasEntry: true },
-  "2025-08-10": { title: "Weekend Adventures", hasEntry: true },
-  "2025-08-08": { title: "Quiet Sunday", hasEntry: true },
-  "2025-08-05": { title: "Productive Day", hasEntry: true },
-  "2025-08-03": { title: "Creative Inspiration", hasEntry: true },
-  "2025-08-01": { title: "New Month Goals", hasEntry: true },
-  "2025-08-20": { title: "Summer Vibes", hasEntry: true },
-  "2025-08-22": { title: "Project Milestone", hasEntry: true },
-  "2025-08-25": { title: "Weekend Getaway", hasEntry: true },
-  "2025-08-28": { title: "Learning New Skills", hasEntry: true },
-};
 
 export function JournalCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [entriesByDate, setEntriesByDate] = useState<{ [date: string]: any[] }>(
+    {}
+  );
+
+  useEffect(() => {
+    const fetchEntries = async () => {
+      const res = await fetch("/api/journal-entries");
+      const data = await res.json();
+      const grouped: { [date: string]: any[] } = {};
+      data.forEach((entry: any) => {
+        // Format date as YYYY-MM-DD
+        const dateStr = new Date(entry.createdAt).toISOString().slice(0, 10);
+        if (!grouped[dateStr]) grouped[dateStr] = [];
+        grouped[dateStr].push(entry);
+      });
+      setEntriesByDate(grouped);
+    };
+    fetchEntries();
+  }, []);
 
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
@@ -68,9 +72,7 @@ export function JournalCalendar() {
   ];
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-  const selectedEntry = selectedDate
-    ? mockEntries[selectedDate as keyof typeof mockEntries]
-    : null;
+  const selectedEntries = selectedDate ? entriesByDate[selectedDate] : null;
 
   return (
     <div className="space-y-6">
@@ -123,7 +125,7 @@ export function JournalCalendar() {
               currentDate.getMonth(),
               day
             );
-            const entry = mockEntries[dateString as keyof typeof mockEntries];
+            const entries = entriesByDate[dateString];
             const isSelected = selectedDate === dateString;
             const today = new Date();
             const isToday =
@@ -135,23 +137,22 @@ export function JournalCalendar() {
               <button
                 key={day}
                 onClick={() => setSelectedDate(dateString)}
-                className={`h-12 text-sm transition-all relative flex items-center justify-center ${
-                  isSelected
-                    ? entry
-                      ? isToday
-                        ? "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#fb7442] font-semibold"
-                        : "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#5b5bfb]/40 font-semibold"
-                      : isToday
+                className={`h-12 text-sm transition-all relative flex items-center justify-center ${isSelected
+                  ? entries && entries.length > 0
+                    ? isToday
+                      ? "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#fb7442] font-semibold"
+                      : "bg-[#e4ce48]/60 text-[#8b59fb] border-2 border-[#5b5bfb]/40 font-semibold"
+                    : isToday
                       ? "bg-[#5b5bfb]/20 text-[#5b5bfb] border-2 border-[#fb7442]"
                       : "bg-[#5b5bfb]/20 text-[#5b5bfb] border-2 border-[#5b5bfb]/40"
-                    : entry
+                  : entries && entries.length > 0
                     ? isToday
                       ? "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border-2 border-[#fb7442] font-semibold"
                       : "bg-[#e4ce48]/60 text-[#8b59fb] hover:bg-[#e4ce48]/80 border border-[#e4ce48]/80 font-semibold"
                     : isToday
-                    ? "hover:bg-gray-100 border-2 border-[#fb7442]"
-                    : "hover:bg-gray-100 border border-transparent"
-                }`}
+                      ? "hover:bg-gray-100 border-2 border-[#fb7442]"
+                      : "hover:bg-gray-100 border border-transparent"
+                  }`}
               >
                 {day}
               </button>
@@ -161,19 +162,25 @@ export function JournalCalendar() {
       </div>
 
       {/* Selected Date Details */}
-      {selectedEntry && (
+      {selectedEntries && (
         <div className="p-4 bg-gray-50 rounded-lg border">
-          <div className="text-base font-medium text-gray-900 mb-2">
-            {selectedEntry.title}
-          </div>
-          <div className="text-sm text-gray-500">
-            {selectedDate &&
-              new Date(selectedDate).toLocaleDateString("en-US", {
-                weekday: "long",
-                month: "long",
-                day: "numeric",
-              })}
-          </div>
+          {selectedEntries.map((entry: any) => (
+            <Link href={`/app/journal/${entry._id || entry.id}`} key={entry._id || entry.id}>
+              <Card className="p-4 mb-4" key={entry._id || entry.id}>
+                <div className="text-base font-medium text-gray-900 mb-2">
+                  {entry.title}
+                </div>
+                <div className="text-sm text-gray-500 mb-1">
+                  {new Date(entry.createdAt).toLocaleDateString("en-US", {
+                    weekday: "long",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </div>
+
+              </Card>
+            </Link>
+          ))}
         </div>
       )}
     </div>
