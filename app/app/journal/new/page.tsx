@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -52,9 +52,18 @@ export default function NewEntryPage() {
   const [editorContent, setEditorContent] = useState("");
   const [journalEntries, setJournalEntries] = useState<any[]>();
   const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState<any>(
-    null
-  );
+  const [recognition, setRecognition] = useState<any>(null);
+  // AI suggestion state and typing debounce
+  const [suggestion, setSuggestion] = useState<string>("");
+  const [suggestionStatus, setSuggestionStatus] = useState<
+    "idle" | "waiting" | "fetching"
+  >("idle");
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+  const [suggestionPos, setSuggestionPos] = useState<{
+    top: number;
+    left: number;
+  }>({ top: 0, left: 0 });
   useEffect(() => {
     const fetchData = async () => {
       const result = await fetch(`/api/journal-entries`);
@@ -135,7 +144,52 @@ export default function NewEntryPage() {
     immediatelyRender: false,
     onUpdate: ({ editor }) => {
       // Update the content state to trigger re-render
-      setEditorContent(editor.getHTML());
+      const html = editor.getHTML();
+      setEditorContent(html);
+
+      // Clear current suggestion when user is typing
+      setSuggestion("");
+      setSuggestionStatus("idle");
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+
+      const plainText = editor.getText().trim();
+      if (plainText.split(/\s+/).length >= 3) {
+        // capture caret coords for positioning suggestion later
+        const { from } = editor.state.selection;
+        const coords = editor.view.coordsAtPos(from);
+        const containerRect =
+          editorContainerRef.current?.getBoundingClientRect();
+        if (containerRect) {
+          setSuggestionPos({
+            top: coords.bottom - containerRect.top,
+            left: 4,
+          });
+        }
+        setSuggestionStatus("waiting");
+        // Trigger suggestion after 2s pause
+        typingTimeoutRef.current = setTimeout(async () => {
+          setSuggestionStatus("fetching");
+          try {
+            const res = await fetch("/api/ai-suggestion", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                content: plainText,
+                title: title, // Include title for better context
+              }),
+            });
+            const data = await res.json();
+            if (data.suggestion) {
+              setSuggestion(data.suggestion);
+            }
+            setSuggestionStatus("idle");
+          } catch (err) {
+            console.error("Failed to fetch AI suggestion", err);
+          }
+        }, 2000); // 2 second pause
+      }
     },
     editorProps: {
       attributes: {
@@ -459,15 +513,31 @@ export default function NewEntryPage() {
                 </Button>
 
                 {editor && (
-                  <div className="ml-auto text-xs text-gray-500">
-                    {editor.storage.characterCount.characters()} characters
+                  <div className="ml-auto text-xs text-gray-500 flex items-center gap-4">
+                    <span>
+                      {editor.storage.characterCount.characters()} characters
+                    </span>
                   </div>
                 )}
-              </div>
-
+              </div>{" "}
+              {/* end toolbar */}
               {/* Editor Content */}
-              <div className="min-h-[400px]">
+              <div className="min-h-[400px] relative" ref={editorContainerRef}>
                 <EditorContent editor={editor} />
+                {(suggestion || suggestionStatus !== "idle") && (
+                  <div
+                    className="absolute text-gray-400 italic pointer-events-none"
+                    style={{
+                      top: suggestionPos.top + 6,
+                      left: suggestionPos.left + 12,
+                    }}
+                  >
+                    {suggestion ||
+                      (suggestionStatus === "waiting"
+                        ? "Pause to get suggestion"
+                        : "Getting suggestion...")}
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
