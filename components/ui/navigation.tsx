@@ -12,6 +12,7 @@ import {
   Menu,
   Home,
   BarChart3,
+  LogOut,
 } from "lucide-react";
 import Image from "next/image";
 
@@ -34,21 +35,34 @@ export function Navigation() {
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            href="/app"
-            className="flex items-center gap-2 font-bold text-xl text-white"
-            aria-label="Go to dashboard"
-          >
-            <Image
-              src="/icon.png"
-              alt="Clearview logo"
-              width={24}
-              height={24}
-              className="w-6 h-6"
-            />
-            <span>Clearview</span>
-          </Link>
+          {/* Logo and Logout */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/app"
+              className="flex items-center gap-2 font-bold text-xl text-white"
+              aria-label="Go to dashboard"
+            >
+              <Image
+                src="/icon.png"
+                alt="Clearview logo"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+              <span>Clearview</span>
+            </Link>
+
+            {/* Logout Button */}
+            <Link href="/">
+              <Button
+                variant="ghost"
+                className="text-white hover:bg-white/10 hover:text-white font-medium"
+              >
+                <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
+                <span>Logout</span>
+              </Button>
+            </Link>
+          </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8" role="menubar">
@@ -124,6 +138,17 @@ export function Navigation() {
                   <Button className="w-full bg-white text-[#8b59fb] hover:bg-gray-100 hover:text-[#8b59fb] font-medium">
                     <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
                     <span>New Entry</span>
+                  </Button>
+                </Link>
+
+                {/* Logout Button for Mobile */}
+                <Link href="/" onClick={() => setIsOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    className="w-full text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-medium justify-start"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
+                    <span>Logout</span>
                   </Button>
                 </Link>
               </nav>
