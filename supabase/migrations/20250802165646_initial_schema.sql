@@ -1,4 +1,4 @@
--- Initial schema for NoteCraft application
+-- Initial schema for Clearview application
 -- This migration creates tables for notes and voice chat functionality
 
 -- Notes Table

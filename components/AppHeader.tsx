@@ -82,7 +82,7 @@ export function AppHeader() {
     >
       <Toolbar>
         <Typography variant="h6" component="h1" sx={{ flexGrow: 1, fontWeight: 600 }}>
-          NoteCraft
+          Clearviewe
         </Typography>
         
         {/* Navigation Buttons */}

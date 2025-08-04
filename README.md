@@ -1,141 +1,74 @@
-# NoteCraft - Notion-like Note Taking App
+# Clearview
+A note-taking app that uses AI to subtly question and prompt you as you write to make your journals more introspective. Additionally, Clearview is designed with accessibility in mind. This means a UI with legible fonts and bright contrasting colours, the ability to record and read journals using speech-to-text and text-to-speech, and suggestions for beginners. Clearview is built using React, Tailwind, Next.js, Material UI, and Shadcn for the frontend and Supabase, MongoDB, and Gemini for the backend.
 
-A powerful, modern note-taking application built with Next.js, featuring rich text editing and hierarchical organization similar to Notion.
+## Test it out!
+Go to [super-big.tech](https://super-big.tech) to test it out
 
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev)
+## Features
 
-## ✨ Features
+- Beautiful UI using Shadcn and Material UI
+- Rich text editing with TipTap
+- Discord open authentication using Supabase
+- Responsive design usin GSAP and Three
+- Tag system for filtering journals
+- Search for journals by contents
 
-- **Rich Text Editing** - Powered by TipTap with full formatting support
-- **Hierarchical Organization** - Create folders and organize notes in a tree structure
-- **Real-time Search** - Instantly find notes by title, content, or tags
-- **Auto-save** - Notes are automatically saved as you type
-- **Discord Authentication** - Secure sign-in with Discord
-- **Responsive Design** - Works great on desktop and mobile
-- **Tag System** - Organize notes with custom tags
-- **Character Counter** - Track your writing progress
-- **Keyboard Shortcuts** - Efficient editing with keyboard shortcuts
+## Setup Instructions
 
-## 🛠️ Tech Stack
-
-- **Framework**: Next.js 14 with App Router
-- **Authentication**: NextAuth.js with Discord provider
-- **Editor**: TipTap (rich text editor)
-- **UI Components**: Radix UI with Tailwind CSS
-- **Icons**: Lucide React
-- **Storage**: Local Storage (easily extendable to database)
-
-## 🚀 Getting Started
-
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd terrahacks
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   Create a `.env.local` file in the root directory:
-   ```env
-   NEXTAUTH_URL=http://localhost:3000
-   NEXTAUTH_SECRET=your-secret-key
-   DISCORD_CLIENT_ID=your-discord-client-id
-   DISCORD_CLIENT_SECRET=your-discord-client-secret
-   ```
-
-4. **Run the development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open your browser**
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📝 Usage
-
-1. **Sign In**: Use your Discord account to sign in
-2. **Create Notes**: Click the "+" button to create new pages or folders
-3. **Rich Editing**: Use the toolbar for formatting or keyboard shortcuts
-4. **Organization**: Drag and organize notes in the sidebar
-5. **Search**: Use the search bar to quickly find any note
-6. **Tags**: Add tags to categorize your notes
-
-## ⌨️ Keyboard Shortcuts
-
-- **Bold**: `Ctrl/Cmd + B`
-- **Italic**: `Ctrl/Cmd + I`
-- **Code**: `Ctrl/Cmd + Shift + M`
-- **Heading 1**: `Ctrl/Cmd + Alt + 1`
-- **Heading 2**: `Ctrl/Cmd + Alt + 2`
-- **Heading 3**: `Ctrl/Cmd + Alt + 3`
-- **Bullet List**: `Ctrl/Cmd + Shift + 8`
-- **Numbered List**: `Ctrl/Cmd + Shift + 7`
-
-## 🔧 Configuration
-
-### Discord OAuth Setup
-
-1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
-2. Create a new application
-3. Navigate to OAuth2 → General
-4. Add redirect URL: `http://localhost:3000/api/auth/callback/discord`
-5. Copy Client ID and Client Secret to your `.env.local`
-
-### Extending Storage
-
-The app currently uses localStorage. To extend to a database:
-
-1. Update the `NotesContext.tsx` to use API calls
-2. Create API routes in `app/api/notes/`
-3. Set up your preferred database (PostgreSQL, MongoDB, etc.)
-
-## 🎨 Customization
-
-- **Themes**: The app supports light/dark modes through Tailwind
-- **Colors**: Modify CSS variables in `app/globals.css`
-- **Components**: All UI components are in the `components/` directory
-- **Editor**: Customize TipTap extensions in `NoteEditor.tsx`
-
-## 📁 Project Structure
-
-```
-├── app/                    # Next.js app directory
-│   ├── api/               # API routes
-│   ├── globals.css        # Global styles
-│   ├── layout.tsx         # Root layout
-│   └── page.tsx           # Home page
-├── components/            # React components
-│   ├── ui/               # Base UI components
-│   ├── AppHeader.tsx     # App header with user menu
-│   ├── NoteEditor.tsx    # Rich text editor
-│   └── NotesSidebar.tsx  # Sidebar with notes tree
-├── contexts/             # React contexts
-│   └── NotesContext.tsx  # Notes state management
-├── types/                # TypeScript types
-│   └── note.ts           # Note-related types
-└── lib/                  # Utilities
-    └── utils.ts          # Helper functions
+### 1. Clone the repository
+```bash
+git clone https://github.com/sharonbasovich/Clearview.git
+cd clearview
+npm install
 ```
 
-## 🤝 Contributing
+### 2. Set up Supabase
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature-name`
-3. Commit your changes: `git commit -m 'Add feature'`
-4. Push to the branch: `git push origin feature-name`
-5. Submit a pull request
+1. Create a new project at [supabase.com](https://supabase.com)
+2. Go to your project settings > API
+3. Copy your project URL and anon key
 
-## 📄 License
+### 3. Configure Discord OAuth
 
-This project is open source and available under the [MIT License](LICENSE).
+1. In your Supabase dashboard, go to Authentication > Providers
+2. Enable Discord provider
+3. Go to Discord Developer Portal (https://discord.com/developers/applications)
+4. Create a new application
+5. Go to OAuth2 settings
+6. Add redirect URI: `https://your-project.supabase.co/auth/v1/callback`
+7. For local development, also add: `http://localhost:54321/auth/v1/callback`
+8. Copy the Client ID and Client Secret to your Supabase Discord provider settings
 
-## 🙏 Acknowledgments
+### 4. Environment Variables
 
-- Built with [v0.dev](https://v0.dev) for rapid UI development
-- Inspired by [Notion](https://notion.so) for the user experience
-- Uses [TipTap](https://tiptap.dev) for rich text editing
-- UI components from [Radix UI](https://radix-ui.com) and [shadcn/ui](https://ui.shadcn.com)
+Create a `.env.local` file in the root directory:
+
+```env
+# Supabase Configuration
+NEXT_PUBLIC_SUPABASE_URL=add yours
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_OR_ANON_KEY=add yours
+
+SUPABASE_SERVICE_ROLE_KEY=add yours
+
+# Google Generative AI Configuration
+GOOGLE_API_KEY=add yours
+
+# Mongo DB
+DB_PASSWORD=add yours
+MONGODB_URI=add yours
+```
+
+### 5. Run the application
+
+```bash
+npm run dev
+```
+
+Visit `http://localhost:3000` to see the application or whatever port is listed in the terminal.
+
+## Authentication Flow
+
+1. User clicks "Sign In" on the landing page or tries to access protected route
+2. Redirected to `/auth` with Discord authentication
+3. After successful authentication, redirected to `/app` (main notes interface)
+4. User data and avatar fetched from Discord profile
