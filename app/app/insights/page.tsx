@@ -242,7 +242,7 @@ export default function InsightsPage() {
           </CardContent>
         </Card>
 
-        {/* Wellbeing Tips */}
+        Wellbeing Tips
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">

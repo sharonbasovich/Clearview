@@ -19,7 +19,7 @@ import Image from "next/image";
 const navigation = [
   { name: "Home", href: "/app", icon: Home },
   { name: "Journal", href: "/app/journal", icon: BookOpen },
-  { name: "Insights", href: "/app/insights", icon: TrendingUp },
+  // { name: "Insights", href: "/app/insights", icon: TrendingUp },
   { name: "Analytics", href: "/app/analytics", icon: BarChart3 },
 ];
 

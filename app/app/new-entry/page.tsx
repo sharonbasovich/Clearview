@@ -117,7 +117,7 @@ export default function NewEntryPage() {
             </Card>
 
             {/* Voice Chat Option */}
-            <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#8b59fb]/50">
+            {/* <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#8b59fb]/50">
               <Link href="/voice-chat" className="block">
                 <CardHeader className="text-center pb-2 md:pb-4">
                   <div className="mx-auto mb-2 md:mb-4 w-16 h-16 md:w-24 md:h-24 bg-gradient-to-br from-[#5b5bfb] to-[#8b59fb] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -134,18 +134,18 @@ export default function NewEntryPage() {
                   <div className="space-y-3 text-sm text-gray-500"></div>
                 </CardContent>
               </Link>
-            </Card>
+            </Card> */}
           </div>
 
           {/* Additional Info */}
-          <div className="mt-12 text-center">
+          {/* <div className="mt-12 text-center">
             <p className="text-gray-500 text-sm">
               Both options will help you capture and reflect on your thoughts in
               different ways.
               <br />
               Choose the method that feels most natural to you today.
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </main>
