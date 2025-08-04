@@ -87,14 +87,14 @@ export default function NewEntryPage() {
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
             Create New Entry
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          {/* <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Choose how you'd like to capture your thoughts today
-          </p>
+          </p> */}
         </div>
 
         {/* Options Grid */}
         <div className="max-w-4xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8"> */}
             {/* Journal Entry Option */}
             <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-2 hover:border-[#8b59fb]/50">
               <Link href="/app/journal/new" className="block">
@@ -146,7 +146,7 @@ export default function NewEntryPage() {
               Choose the method that feels most natural to you today.
             </p>
           </div> */}
-        </div>
+        {/* </div> */}
       </div>
     </main>
   );
